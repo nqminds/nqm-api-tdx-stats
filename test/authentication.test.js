@@ -36,13 +36,44 @@ describe("authentication.js", function() {
     it("should set the token when setToken called", function() {
       const api = new TDXApiStats(configNoToken);
       api.setToken(configToken.accessToken);
+
       expect(api.config.accessToken).to.equal(configToken.accessToken);
     });
 
     it("should set the shareKey when setShareKey called", function() {
       const api = new TDXApiStats(configNoToken);
-      api.setToken(configToken.accessToken);
-      expect(api.config.accessToken).to.equal(configToken.accessToken);
+      api.setShareKey(shareKeyID, shareKeySecret);
+
+      expect(api.shareKeyID).to.equal(shareKeyID);
+      expect(shareKeySecret).to.equal(shareKeySecret);
+    });
+  });
+
+  describe("authentication", function() {
+    it("should set the access token", function() {
+      const api = new TDXApiStats(configNoToken);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      api.authenticate().then(() => {
+        expect(api.config.accessToken).to.not.equal("");
+      });
+    });
+
+    it("should return error when key wrong", function() {
+      const api = new TDXApiStats(configNoToken);
+      api.setShareKey(shareKeyID, "");
+      api.authenticate().catch((err) => {
+        expect(err).to.not.equal(null);
+      });
+    });
+
+    it("should return when accessToken is already set", function() {
+      const api = new TDXApiStats(configNoToken);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      api.authenticate()
+        .then(api.authenticate)
+        .then(() => {
+          expect(api.config.accessToken).to.not.equal("");
+        });
     });
   });
 });
