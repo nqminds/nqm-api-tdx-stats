@@ -1,0 +1,14 @@
+{
+  "public": {
+    "appTitle": "nqm iot demo",
+    "ddpServerURL": "https://tbx.nq-m.com/",
+    "authServerURL": "https://tdx.nq-m.com",
+    "commandHost": "https://cmd.nq-m.com",
+    "queryHost": "https://q.nq-m.com",
+    "mapUsername": "nqmivan.12id4bh0",
+    "mapPassword": "pk.eyJ1IjoibnFtaXZhbiIsImEiOiJjaXJsendoMHMwMDM3aGtuaGh2bWt5OXRvIn0.6iCk2i96NUucsyDlbnVtiA",
+		"busTable": "S1xVSpWHR",
+		"gpsTable":"Hkgur7zKC",
+		"gpsTableLatest":"Hyx0U2PGJl"
+  }
+}
