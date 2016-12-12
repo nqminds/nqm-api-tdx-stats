@@ -1,7 +1,7 @@
 module.exports = (function() {
-    "use strict";
+  "use strict";
 
-    var API = require("./lib/api.js");
+  const API = require("./lib/api.js");
 
-    return API;
-}())
+  return API;
+}());
