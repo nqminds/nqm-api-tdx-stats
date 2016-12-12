@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "browserify index.js --s TDXApiStats > client-api.js",
+    "lint": "eslint client && echo \"eslint: no lint errors\"",
     "postinstall": "browserify index.js --s TDXApiStats > client-api.js"
   },
   "repository": {
@@ -19,11 +20,11 @@
   },
   "homepage": "https://github.com/nqminds/nqm-api-tdx-stats#readme",
   "dependencies": {
-    "browserify": "^13.1.0",
-    "debug": "^2.2.0"
+    "browserify": "^13.1.1",
+    "debug": "^2.3.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.0.0"
+    "mocha": "^3.2.0"
   }
 }
