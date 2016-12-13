@@ -26,9 +26,43 @@ describe("first-order.js", function() {
       api.setShareKey(shareKeyID, shareKeySecret);
       return api.getMin(datasetId, null, ["LotCode"])
           .then((val) => {
-            return Promise.resolve(val.data[0][constants.countFieldName]);
+            return Promise.resolve(val.data[0].LotCode);
           })
-      .should.eventually.equal(21);
+      .should.eventually.equal(1);
+    });
+
+    it("should return the minimum for the field LotCode and BayCount", function() {
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getMin(datasetId, null, ["LotCode", "BayCount"])
+          .then((val) => {
+            return Promise.resolve({1: val.data[0].LotCode, 2: val.data[0].BayCount});
+          })
+      .should.eventually.deep.equal({1: 1, 2: 2});
+    });
+
+    it("should return the minimum for the field LotCode and BayCount with the match BayType=Public", function() {
+      const api = new TDXApiStats(config);
+      const match = {"BayType": "Public"};
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getMin(datasetId, match, ["LotCode", "BayCount"])
+          .then((val) => {
+            return Promise.resolve({1: val.data[0].LotCode, 2: val.data[0].BayCount});
+          })
+      .should.eventually.deep.equal({1: 2, 2: 2});
+    });
+
+    it("should timeout", function() {
+      // set the minimum timeout
+      const timeout = 1;
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getMin(datasetId, null, ["LotCode"], 1)
+          .then((val) => {
+            return Promise.resolve(val.data[0].LotCode);
+          })
+      .should.be.rejected;
     });
   });
 });
