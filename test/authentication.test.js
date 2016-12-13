@@ -1,7 +1,10 @@
 /* eslint-env mocha */
 
 const chai = require("chai");
+const chaiAsPromised = require("chai-as-promised");
 const expect = chai.expect;
+chai.use(chaiAsPromised);
+chai.should();
 
 const TDXApiStats = require("../lib/api.js");
 
@@ -53,27 +56,21 @@ describe("authentication.js", function() {
     it("should set the access token", function() {
       const api = new TDXApiStats(configNoToken);
       api.setShareKey(shareKeyID, shareKeySecret);
-      api.authenticate().then(() => {
-        expect(api.config.accessToken).to.not.equal("");
-      });
+      return api.authenticate().should.be.fulfilled;
     });
 
     it("should return error when key wrong", function() {
       const api = new TDXApiStats(configNoToken);
       api.setShareKey(shareKeyID, "");
-      api.authenticate().catch((err) => {
-        expect(err).to.not.equal(null);
-      });
+      return api.authenticate().should.be.rejected;
     });
 
     it("should return when accessToken is already set", function() {
       const api = new TDXApiStats(configNoToken);
       api.setShareKey(shareKeyID, shareKeySecret);
-      api.authenticate()
+      return api.authenticate()
         .then(api.authenticate)
-        .then(() => {
-          expect(api.config.accessToken).to.not.equal("");
-        });
+        .should.be.fulfilled;
     });
   });
 });
