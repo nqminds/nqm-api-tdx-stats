@@ -11,10 +11,12 @@ const shareKeySecret = "root";
 const datasetId = "Sygy_xBhml";
 
 const api = new TDXApiStats(config);
+const match={"BayType": "Mobility bays"};
+
 api.setShareKey(shareKeyID, shareKeySecret);
-api.getMin(datasetId, null, ["LotCode"])
+api.getAverage(datasetId, match, ["LotCode"])
     .then((val) => {
-      log(val.data[0].LotCode);
+      log(val.data[0]);
     })
     .catch((err) => {
       log(err);
