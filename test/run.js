@@ -8,16 +8,24 @@ const config = {
 
 const shareKeyID = "ryelV9N3mg";
 const shareKeySecret = "root";
-const datasetId = "Sygy_xBhml";
+const datasetId = "SJxzMvRIye"; //"Sygy_xBhml";
 
 const api = new TDXApiStats(config);
-const match={"BayType": "Mobility bays"};
-
 api.setShareKey(shareKeyID, shareKeySecret);
-api.getAverage(datasetId, match, ["LotCode"])
+api.getMin(datasetId, null, ["persons"])
     .then((val) => {
       log(val.data[0]);
     })
     .catch((err) => {
       log(err);
     });
+
+// const match={"BayType": "Mobility bays"};
+
+// api.getAverage(datasetId, match, ["LotCode"])
+//     .then((val) => {
+//       log(val.data[0]);
+//     })
+//     .catch((err) => {
+//       log(err);
+//     });
