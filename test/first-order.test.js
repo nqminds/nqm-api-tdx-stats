@@ -75,7 +75,7 @@ describe("first-order.js", function() {
       const timeout = 1;
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getMin(datasetId, null, ["LotCode"], 1)
+      return api.getMin(datasetId, null, ["LotCode"], timeout)
           .then((val) => {
             return Promise.resolve(val.data[0].LotCode);
           })

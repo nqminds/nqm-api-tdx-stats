@@ -2,17 +2,19 @@ const log = require("debug")("nqm-api-tdx-stats");
 const TDXApiStats = require("../lib/api.js");
 
 const config = {
-  "commandHost": "https://cmd.nq-m.com",
-  "queryHost": "https://q.nq-m.com",
+  "commandHost": "https://cmd.nqminds.com",
+  "queryHost": "https://q.nqminds.com",
 };
 
-const shareKeyID = "ryelV9N3mg";
+const shareKeyID = "Syl5oSTRme";
 const shareKeySecret = "root";
-const datasetId = "SJxzMvRIye"; //"Sygy_xBhml";
+
+// Educational achievements from Toby's nqminds account'
+const datasetId = "VyZFr8hWzg";
 
 const api = new TDXApiStats(config);
 api.setShareKey(shareKeyID, shareKeySecret);
-api.getMin(datasetId, null, ["persons"])
+api.getMin(datasetId, null, ["rate"])
     .then((val) => {
       log(val.data[0]);
     })
