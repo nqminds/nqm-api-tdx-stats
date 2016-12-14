@@ -75,11 +75,21 @@ describe("first-order.js", function() {
       const timeout = 1;
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(["$min"], datasetId, null, ["LotCode"], timeout)
+      return api.getFirstOrder(["$min"], datasetId, null, [testFieldOne], timeout)
           .then((val) => {
-            return Promise.resolve(val.data[0].LotCode);
+            return Promise.resolve(val.data[0][testFieldOne]);
           })
       .should.be.rejected;
+    });
+
+    it("should return the min, max and avg for the field ${testFieldOne} and ${testFieldOne}", function() {
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getFirstOrder(["$min", "$max", "$avg"], datasetId, null, [testFieldOne, testFieldTwo])
+          .then((val) => {
+            return Promise.resolve(val.data[0]);
+          })
+      .should.eventually.deep.equal({1: matchMinFieldOne, 2: matchMinFieldTwo});
     });
   });
 });
