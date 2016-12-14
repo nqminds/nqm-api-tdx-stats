@@ -14,7 +14,7 @@ const datasetId = "VyZFr8hWzg";
 
 const api = new TDXApiStats(config);
 api.setShareKey(shareKeyID, shareKeySecret);
-api.getMin(datasetId, null, ["rate"])
+api.getFirstOrder(["$min"], datasetId, null, ["rate"])
     .then((val) => {
       log(val.data[0]);
     })

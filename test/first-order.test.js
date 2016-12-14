@@ -42,7 +42,7 @@ describe("first-order.js", function() {
     it(`should return the minimum for the field ${testFieldOne}`, function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getMin(datasetId, null, [testFieldOne])
+      return api.getFirstOrder(["$min"], datasetId, null, [testFieldOne])
           .then((val) => {
             return Promise.resolve(val.data[0][testFieldOne]);
           })
@@ -52,7 +52,7 @@ describe("first-order.js", function() {
     it(`should return the minimum for the field ${testFieldOne} and ${testFieldTwo}`, function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getMin(datasetId, null, [testFieldOne, testFieldTwo])
+      return api.getFirstOrder(["$min"], datasetId, null, [testFieldOne, testFieldTwo])
           .then((val) => {
             return Promise.resolve({1: val.data[0][testFieldOne], 2: val.data[0][testFieldTwo]});
           })
@@ -63,7 +63,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
 
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getMin(datasetId, match, [testFieldOne, testFieldTwo])
+      return api.getFirstOrder(["$min"], datasetId, match, [testFieldOne, testFieldTwo])
           .then((val) => {
             return Promise.resolve({1: val.data[0][testFieldOne], 2: val.data[0][testFieldTwo]});
           })
@@ -75,7 +75,7 @@ describe("first-order.js", function() {
       const timeout = 1;
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getMin(datasetId, null, ["LotCode"], timeout)
+      return api.getFirstOrder(["$min"], datasetId, null, ["LotCode"], timeout)
           .then((val) => {
             return Promise.resolve(val.data[0].LotCode);
           })
