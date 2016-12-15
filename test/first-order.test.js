@@ -33,11 +33,22 @@ const testFieldOne = "ecode";
 const testFieldTwo = "rate";
 const match = {"name": "Surrey"};
 const testOutputs = [
-  {1: 201},
-  {1: 201, 2: 0},
-  {1: 936, 2: 30},
-  {},
-  {1: {"$min": 0, "$max": 0, "$avg": parseFloat(613.58)}, 2: {"$min": 0, "$max": 0, "$avg": parseFloat(63.42)}},
+  {1: 201},               // Test [1]
+  {1: 201, 2: 0},         // Test [2]
+  {1: 936, 2: 30},        // Test [3]
+  {},                     // Test [4]
+  {                       // Test [5]
+    1: {
+      "$min": 201,
+      "$max": 938,
+      "$avg": 613.578947368421,
+    },
+    2: {
+      "$min": 0,
+      "$max": 166,
+      "$avg": 63.41940789473684,
+    },
+  },
 ];
 const apiTimeout = 1000;
 
@@ -93,8 +104,6 @@ describe("first-order.js", function() {
       api.setShareKey(shareKeyID, shareKeySecret);
       return api.getFirstOrder(["$min", "$max", "$avg"], datasetId, null, [testFieldOne, testFieldTwo], apiTimeout)
           .then((val) => {
-            val[testFieldOne]["$avg"] = parseFloat(val[testFieldOne]["$avg"].toFixed(2));
-            val[testFieldTwo]["$avg"] = parseFloat(val[testFieldTwo]["$avg"].toFixed(2));
             return Promise.resolve({1: val[testFieldOne], 2: val[testFieldTwo]});
           })
           .should.eventually.deep.equal(testOutputs[4]);
