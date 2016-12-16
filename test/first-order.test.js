@@ -9,14 +9,14 @@ chai.should();
 
 const TDXApiStats = require("../lib/api.js");
 
-const configNqm = {
-  "commandHost": "https://cmd.nq-m.com",
-  "queryHost": "https://q.nq-m.com",
-};
+// const configNqm = {
+//   "commandHost": "https://cmd.nq-m.com",
+//   "queryHost": "https://q.nq-m.com",
+// };
 
-const shareKeyIDNqm = "ryelV9N3mg";
-const shareKeySecretNqm = "root";
-const datasetIdNqm = "Sygy_xBhml";
+// const shareKeyIDNqm = "ryelV9N3mg";
+// const shareKeySecretNqm = "root";
+// const datasetIdNqm = "Sygy_xBhml";
 
 const config = {
   "commandHost": "https://cmd.nqminds.com",
