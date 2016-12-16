@@ -7,7 +7,6 @@ const Promise = require("bluebird");
 chai.use(chaiAsPromised);
 chai.should();
 
-const constants = require("../lib/constants");
 const TDXApiStats = require("../lib/api.js");
 
 const configNqm = {
@@ -29,84 +28,126 @@ const shareKeySecret = "root";
 
 // Educational achievements from Toby's nqminds account'
 const datasetId = "VyZFr8hWzg";
-const testFieldOne = "ecode";
-const testFieldTwo = "rate";
-const match = {"name": "Surrey"};
+
+const testInputs = [
+  {type: ["$min"], fields: ["ecode"]},                                    // Test [1]
+  {type: ["$min"], fields: ["ecode", "rate"]},                            // Test [2]
+  {type: ["$min"], match: {"name": "Surrey"}, fields: ["ecode", "rate"]}, // Test [3]
+  {type: ["$min"], fields: ["ecode"]},                                    // Test [4]
+  {type: ["$min", "$max", "$avg"], fields: ["ecode", "rate"]},                // Test [5]
+];
+
 const testOutputs = [
-  {1: 201},               // Test [1]
-  {1: 201, 2: 0},         // Test [2]
-  {1: 936, 2: 30},        // Test [3]
+  {                       // Test [1]
+    count: 608,
+    ecode: {
+      "$min": 201,
+    },
+  },
+  {                       // Test [2]
+    count: 608,
+    ecode: {
+      "$min": 201,
+    },
+    rate: {
+      "$min": 0,
+    },
+  },
+  {                       // Test [3]
+    count: 4,
+    ecode: {
+      "$min": 936,
+    },
+    rate: {
+      "$min": 30,
+    },
+  },
   {},                     // Test [4]
   {                       // Test [5]
-    1: {
+    count: 608,
+    ecode: {
       "$min": 201,
       "$max": 938,
       "$avg": 613.578947368421,
     },
-    2: {
+    rate: {
       "$min": 0,
       "$max": 166,
       "$avg": 63.41940789473684,
     },
   },
 ];
+
+const testTimeout = 6000;
 const apiTimeout = 1000;
 
 describe("first-order.js", function() {
+  this.timeout(testTimeout);
+
   describe(`for test dataset: ${datasetId}`, function() {
     // Test [1]
-    it(`should return the minimum for the field ${testFieldOne}`, function() {
+    it(`should return the minimum for the fields ${JSON.stringify(testInputs[0].fields)}`, function() {
+      const test = 0;
+
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(["$min"], datasetId, null, [testFieldOne], apiTimeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, apiTimeout)
           .then((val) => {
-            return Promise.resolve({1: val[testFieldOne]["$min"]});
+            return Promise.resolve(val);
           })
-          .should.eventually.equal(testOutputs[0]);
+          .should.eventually.deep.equal(testOutputs[test]);
     });
     // Test [2]
-    it(`should return the minimum for the field ${testFieldOne} and ${testFieldTwo}`, function() {
+    it(`should return the minimum for the fields ${JSON.stringify(testInputs[1].fields)}`, function() {
+      const test = 1;
+
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(["$min"], datasetId, null, [testFieldOne, testFieldTwo], apiTimeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, apiTimeout)
           .then((val) => {
-            return Promise.resolve({1: val[testFieldOne]["$min"], 2: val[testFieldTwo]["$min"]});
+            return Promise.resolve(val);
           })
           .should.eventually.deep.equal(testOutputs[1]);
     });
 
     // Test [3]
-    it(`should return the minimum for the field ${testFieldOne} 
-        and ${testFieldOne} with the match ${JSON.stringify(match)}`, function() {
+    it(`should return the minimum for the fields ${JSON.stringify(testInputs[2].fields)}
+        with the match ${JSON.stringify(testInputs[2].match)}`, function() {
+      const test = 2;
       const api = new TDXApiStats(config);
 
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(["$min"], datasetId, match, [testFieldOne, testFieldTwo], apiTimeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId,
+          testInputs[test].match, testInputs[test].fields, apiTimeout)
           .then((val) => {
-            return Promise.resolve({1: val[testFieldOne]["$min"], 2: val[testFieldTwo]["$min"]});
+            return Promise.resolve(val);
           })
-          .should.eventually.deep.equal(testOutputs[2]);
+          .should.eventually.deep.equal(testOutputs[test]);
     });
 
     // Test [4]
     it("should timeout", function() {
       // set the minimum timeout
+      const test = 3;
+
       const timeout = 1;
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(["$min"], datasetId, null, [testFieldOne], timeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, timeout)
               .should.be.rejected;
     });
 
     // Test [5]
-    it("should return the min, max and avg for the field ${testFieldOne} and ${testFieldOne}", function() {
+    it(`should return the minimum for the fields ${JSON.stringify(testInputs[4].fields)}`, function() {
+      const test = 4;
+
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(["$min", "$max", "$avg"], datasetId, null, [testFieldOne, testFieldTwo], apiTimeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, apiTimeout)
           .then((val) => {
-            return Promise.resolve({1: val[testFieldOne], 2: val[testFieldTwo]});
+            return Promise.resolve(val);
           })
-          .should.eventually.deep.equal(testOutputs[4]);
+          .should.eventually.deep.equal(testOutputs[test]);
     });
   });
 });
