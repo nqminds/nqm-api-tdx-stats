@@ -34,7 +34,8 @@ const testInputs = [
   {type: ["$min"], fields: ["ecode", "rate"]},                            // Test [2]
   {type: ["$min"], match: {"name": "Surrey"}, fields: ["ecode", "rate"]}, // Test [3]
   {type: ["$min"], fields: ["ecode"]},                                    // Test [4]
-  {type: ["$min", "$max", "$avg"], fields: ["ecode", "rate"]},                // Test [5]
+  {type: ["$min", "$max", "$avg"], fields: ["ecode", "rate"]},            // Test [5]
+  {type: ["$min", "$max", "$avg"], fields: []},                           // Test [5]
 ];
 
 const testOutputs = [
@@ -75,6 +76,9 @@ const testOutputs = [
       "$max": 166,
       "$avg": 63.41940789473684,
     },
+  },
+  {                       // Test [6]
+    count: 608,
   },
 ];
 
@@ -140,6 +144,19 @@ describe("first-order.js", function() {
     // Test [5]
     it(`should return the minimum for the fields ${JSON.stringify(testInputs[4].fields)}`, function() {
       const test = 4;
+
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, apiTimeout)
+          .then((val) => {
+            return Promise.resolve(val);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [6]
+    it(`should return only the count for the empty set of fields ${JSON.stringify(testInputs[4].fields)}`, function() {
+      const test = 5;
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
