@@ -19,21 +19,28 @@ describe("chunk-iterator.test.js", function() {
     };
 
     const changeFunction = function(params) {
+      let done = false;
       const argumentList = _.map(arguments, (val, key) => (val));
 
+      if (_.isEqual(argumentList, firstFuncParams))
+        done = true;
       argumentList[0] = "Test4";
       argumentList[1].key1 = argumentList[1].key1 + 1;
       argumentList[1].key2 = argumentList[1].key2 + 1;
       argumentList[2] = argumentList[2] + 1;
 
-      return {done: true, arguments: argumentList};
+      return {done: done, arguments: argumentList};
     };
 
     const iterator = new ChunkIterator(callFunction, funcParams, changeFunction);
 
     let ret = iterator.next();
-    ret.done.should.equal(true);
+    ret.done.should.equal(false);
     ret.value.should.deep.equal(firstFuncParams);
+
+    ret = iterator.next();
+    ret.done.should.equal(true);
+    ret.value.should.deep.equal(secondFuncParams);
 
     ret = iterator.next();
     ret.done.should.equal(true);
