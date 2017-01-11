@@ -28,6 +28,12 @@ const testInputs = [
   {type: ["$min"], match: {}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
+// const datasetId = "SkephVW8t";
+// const testInputs = [
+//   {type: ["$min"], match: {}, fields: ["type"], index: []},                                    // Test [1]
+//   {type: ["$min"], match: {}, fields: ["type"], index: ["timestamp"]},
+// ];
+
 const testOutputs = [
   {                       // Test [1]
     count: 27520,
@@ -46,7 +52,7 @@ const testOutputs = [
 const testTimeout = 6000;
 const apiTimeout = 1000;
 
-describe("first-order-chunk.js", function() {
+describe.only("first-order-chunk.js", function() {
   this.timeout(testTimeout);
 
   describe(`for test dataset: ${datasetId}`, function() {
