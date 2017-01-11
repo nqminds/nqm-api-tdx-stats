@@ -52,7 +52,7 @@ const testOutputs = [
 const testTimeout = 6000;
 const apiTimeout = 1000;
 
-describe.only("first-order-chunk.js", function() {
+describe("first-order-chunk.js", function() {
   this.timeout(testTimeout);
 
   describe(`for test dataset: ${datasetId}`, function() {
