@@ -25,11 +25,18 @@ const datasetId = "HygxXEFSB";
 
 const testInputs = [
   {type: ["$min"], match: {"SID": "2021", "Waste_Type": "WOODMX", "Contract": "Non_Contract"}, fields: ["Friday"], index: []},                                    // Test [1]
+  {type: ["$min"], match: {}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
   {                       // Test [1]
     count: 27520,
+    Friday: {
+      "$min": 0,
+    },
+  },
+  {                       // Test [2]
+    count: 0,
     Friday: {
       "$min": 0,
     },
@@ -46,6 +53,22 @@ describe("first-order-chunk.js", function() {
     // Test [1]
     it(`should return getFirstOrder for index ${JSON.stringify(testInputs[0].index)}`, function() {
       const test = 0;
+
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getFirstOrderChunk(testInputs[test].type, datasetId, null, testInputs[test].fields, testInputs[test].index, apiTimeout)
+          .then((iterator) => {
+            return iterator.next().value;
+          })
+          .then((val) => {
+            return Promise.resolve(val);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [2]
+    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[1].index)}`, function() {
+      const test = 1;
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
