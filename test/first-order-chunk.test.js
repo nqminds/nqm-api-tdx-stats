@@ -49,13 +49,14 @@ describe("first-order-chunk.js", function() {
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      console.log(api.getFirstOrderChunk(testInputs[test].type, datasetId, null, testInputs[test].fields, testInputs[test].index, apiTimeout).value);
-      // return api.getFirstOrderChunk(testInputs[test].type, datasetId, null, testInputs[test].fields, testInputs[test].index, apiTimeout)
-      //     .value
-      //     .then((val) => {
-      //       return Promise.resolve(val);
-      //     })
-      //     .should.eventually.deep.equal(testOutputs[test]);
+      return api.getFirstOrderChunk(testInputs[test].type, datasetId, null, testInputs[test].fields, testInputs[test].index, apiTimeout)
+          .then((iterator) => {
+            return iterator.next().value;
+          })
+          .then((val) => {
+            return Promise.resolve(val);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
     });
   });
 });
