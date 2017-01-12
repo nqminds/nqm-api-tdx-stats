@@ -95,7 +95,7 @@ describe("first-order.js", function() {
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, apiTimeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, 0, apiTimeout)
           .then((val) => {
             return Promise.resolve(val);
           })
@@ -107,7 +107,7 @@ describe("first-order.js", function() {
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, apiTimeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, 0, apiTimeout)
           .then((val) => {
             return Promise.resolve(val);
           })
@@ -122,7 +122,7 @@ describe("first-order.js", function() {
 
       api.setShareKey(shareKeyID, shareKeySecret);
       return api.getFirstOrder(testInputs[test].type, datasetId,
-          testInputs[test].match, testInputs[test].fields, apiTimeout)
+          testInputs[test].match, testInputs[test].fields, 0, apiTimeout)
           .then((val) => {
             return Promise.resolve(val);
           })
@@ -137,7 +137,7 @@ describe("first-order.js", function() {
       const timeout = 1;
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, timeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, 0, timeout)
               .should.be.rejected;
     });
 
@@ -147,7 +147,7 @@ describe("first-order.js", function() {
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, apiTimeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, 0, apiTimeout)
           .then((val) => {
             return Promise.resolve(val);
           })
@@ -160,7 +160,7 @@ describe("first-order.js", function() {
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, apiTimeout)
+      return api.getFirstOrder(testInputs[test].type, datasetId, null, testInputs[test].fields, 0, apiTimeout)
           .then((val) => {
             return Promise.resolve(val);
           })

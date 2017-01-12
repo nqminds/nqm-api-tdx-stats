@@ -24,8 +24,8 @@ const shareKeySecret = "root";
 const datasetId = "HygxXEFSB";
 
 const testInputs = [
-  {type: ["$min"], match: {"SID": "2021", "Waste_Type": "WOODMX", "Contract": "Non_Contract"}, fields: ["Friday"], index: []},                                    // Test [1]
-  {type: ["$min"], match: {}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$min"], match: {}, fields: ["Friday"], index: []},                                    // Test [1]
+  {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"NID": "11111111111111111111111111"}, {"Contract": "Non_Contract"}, {"First_Movement": "HURN WOOD TRANSFER"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 // const datasetId = "SkephVW8t";
@@ -42,9 +42,9 @@ const testOutputs = [
     },
   },
   {                       // Test [2]
-    count: 0,
+    count: 17,
     Friday: {
-      "$min": 0,
+      "$avg": 0,
     },
   },
 ];
@@ -57,14 +57,14 @@ describe("first-order-chunk.js", function() {
 
   describe(`for test dataset: ${datasetId}`, function() {
     // Test [1]
-    it.only(`should return getFirstOrder for index ${JSON.stringify(testInputs[0].index)}`, function() {
+    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[0].index)}`, function() {
       const test = 0;
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       return api.getFirstOrderChunk(testInputs[test].type, datasetId, null, testInputs[test].fields, testInputs[test].index, apiTimeout)
           .then((iterator) => {
-            return iterator.next().value;
+            return iterator.next();
           })
           .then((val) => {
             return Promise.resolve(val);
@@ -78,9 +78,9 @@ describe("first-order-chunk.js", function() {
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrderChunk(testInputs[test].type, datasetId, null, testInputs[test].fields, testInputs[test].index, apiTimeout)
+      return api.getFirstOrderChunk(testInputs[test].type, datasetId, testInputs[test].match, testInputs[test].fields, testInputs[test].index, apiTimeout)
           .then((iterator) => {
-            return iterator.next().value;
+            return iterator.next();
           })
           .then((val) => {
             return Promise.resolve(val);

@@ -13,11 +13,11 @@ describe("chunk-iterator.test.js", function() {
     const firstFuncParams = ["Test4", {key1: 2, key2: 3}, 44];
     const secondFuncParams = ["Test4", {key1: 3, key2: 4}, 45];
 
-    const callFunction = function() {
+    const callFunction = function(changeOutput) {
       return Promise.resolve(this._funcParams);
     };
 
-    const changeFunction = function(params) {
+    const changeFunction = function() {
       if (_.isEqual(this._funcParams, firstFuncParams))
         this._done = true;
 
@@ -26,13 +26,13 @@ describe("chunk-iterator.test.js", function() {
       this._funcParams[1].key2 = this._funcParams[1].key2 + 1;
       this._funcParams[2] = this._funcParams[2] + 1;
 
-      return Promise.resolve();
+      return Promise.resolve({});
     };
 
     const iterator = new ChunkIterator(callFunction, funcParams, changeFunction);
 
     const ret = iterator.next();
-    return ret.value
+    return ret
               .then((val) => {
                 return Promise.resolve(val);
               })
@@ -41,14 +41,14 @@ describe("chunk-iterator.test.js", function() {
                 return iterator.next();
               })
               .then((ret) => {
-                return Promise.resolve(ret.value);
+                return Promise.resolve(ret);
               })
               .should.eventually.deep.equal(secondFuncParams)
               .then(() => {
                 return iterator.next();
               })
               .then((ret) => {
-                return Promise.resolve(ret.value);
+                return Promise.resolve(ret);
               })
               .should.eventually.deep.equal(secondFuncParams);
   });
