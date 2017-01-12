@@ -57,7 +57,7 @@ describe("first-order-chunk.js", function() {
 
   describe(`for test dataset: ${datasetId}`, function() {
     // Test [1]
-    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[0].index)}`, function() {
+    it.only(`should return getFirstOrder for index ${JSON.stringify(testInputs[0].index)}`, function() {
       const test = 0;
 
       const api = new TDXApiStats(config);

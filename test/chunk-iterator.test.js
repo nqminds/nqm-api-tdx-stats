@@ -7,29 +7,26 @@ const _ = require("lodash");
 
 chai.should();
 
-describe.only("chunk-iterator.test.js", function() {
+describe("chunk-iterator.test.js", function() {
   it("should return done=true", function() {
     const funcParams = ["Test1", {key1: 1, key2: 2}, 43];
     const firstFuncParams = ["Test4", {key1: 2, key2: 3}, 44];
     const secondFuncParams = ["Test4", {key1: 3, key2: 4}, 45];
 
-    const callFunction = function(params) {
-      const argumentList = _.map(arguments, (val, key) => (val));
-      return Promise.resolve(argumentList);
+    const callFunction = function() {
+      return Promise.resolve(this._funcParams);
     };
 
     const changeFunction = function(params) {
-      let done = false;
-      const argumentList = _.map(arguments, (val, key) => (val));
+      if (_.isEqual(this._funcParams, firstFuncParams))
+        this._done = true;
 
-      if (_.isEqual(argumentList, firstFuncParams))
-        done = true;
-      argumentList[0] = "Test4";
-      argumentList[1].key1 = argumentList[1].key1 + 1;
-      argumentList[1].key2 = argumentList[1].key2 + 1;
-      argumentList[2] = argumentList[2] + 1;
+      this._funcParams[0] = "Test4";
+      this._funcParams[1].key1 = this._funcParams[1].key1 + 1;
+      this._funcParams[1].key2 = this._funcParams[1].key2 + 1;
+      this._funcParams[2] = this._funcParams[2] + 1;
 
-      return Promise.resolve({done: done, arguments: argumentList});
+      return Promise.resolve();
     };
 
     const iterator = new ChunkIterator(callFunction, funcParams, changeFunction);
@@ -54,8 +51,5 @@ describe.only("chunk-iterator.test.js", function() {
                 return Promise.resolve(ret.value);
               })
               .should.eventually.deep.equal(secondFuncParams);
-
-    // ret = iterator.next();
-    // ret.value.should.deep.equal(secondFuncParams);
   });
 });
