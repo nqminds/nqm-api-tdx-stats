@@ -7,7 +7,7 @@ const _ = require("lodash");
 
 chai.should();
 
-describe("chunk-iterator.test.js", function() {
+describe.only("chunk-iterator.test.js", function() {
   it("should return done=true", function() {
     const funcParams = ["Test1", {key1: 1, key2: 2}, 43];
     const firstFuncParams = ["Test4", {key1: 2, key2: 3}, 44];
@@ -15,7 +15,7 @@ describe("chunk-iterator.test.js", function() {
 
     const callFunction = function(params) {
       const argumentList = _.map(arguments, (val, key) => (val));
-      return argumentList;
+      return Promise.resolve(argumentList);
     };
 
     const changeFunction = function(params) {
@@ -29,21 +29,33 @@ describe("chunk-iterator.test.js", function() {
       argumentList[1].key2 = argumentList[1].key2 + 1;
       argumentList[2] = argumentList[2] + 1;
 
-      return {done: done, arguments: argumentList};
+      return Promise.resolve({done: done, arguments: argumentList});
     };
 
     const iterator = new ChunkIterator(callFunction, funcParams, changeFunction);
 
-    let ret = iterator.next();
-    ret.done.should.equal(false);
-    ret.value.should.deep.equal(firstFuncParams);
+    const ret = iterator.next();
+    return ret.value
+              .then((val) => {
+                return Promise.resolve(val);
+              })
+              .should.eventually.deep.equal(firstFuncParams)
+              .then(() => {
+                return iterator.next();
+              })
+              .then((ret) => {
+                return Promise.resolve(ret.value);
+              })
+              .should.eventually.deep.equal(secondFuncParams)
+              .then(() => {
+                return iterator.next();
+              })
+              .then((ret) => {
+                return Promise.resolve(ret.value);
+              })
+              .should.eventually.deep.equal(secondFuncParams);
 
-    ret = iterator.next();
-    ret.done.should.equal(true);
-    ret.value.should.deep.equal(secondFuncParams);
-
-    ret = iterator.next();
-    ret.done.should.equal(true);
-    ret.value.should.deep.equal(secondFuncParams);
+    // ret = iterator.next();
+    // ret.value.should.deep.equal(secondFuncParams);
   });
 });
