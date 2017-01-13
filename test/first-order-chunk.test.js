@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+"use strict";
 
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
@@ -12,6 +13,7 @@ const TDXApiStats = require("../lib/api.js");
 const config = {
   "commandHost": "https://cmd.nqminds.com",
   "queryHost": "https://q.nqminds.com",
+  "searchLimit": 10,
 };
 
 const shareKeyID = "Syl5oSTRme";
@@ -25,14 +27,10 @@ const datasetId = "HygxXEFSB";
 
 const testInputs = [
   {type: ["$min"], match: {}, fields: ["Friday"], index: []},                                    // Test [1]
-  {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"NID": "11111111111111111111111111"}, {"Contract": "Non_Contract"}, {"First_Movement": "HURN WOOD TRANSFER"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
-
-// const datasetId = "SkephVW8t";
-// const testInputs = [
-//   {type: ["$min"], match: {}, fields: ["type"], index: []},                                    // Test [1]
-//   {type: ["$min"], match: {}, fields: ["type"], index: ["timestamp"]},
-// ];
 
 const testOutputs = [
   {                       // Test [1]
@@ -42,11 +40,21 @@ const testOutputs = [
     },
   },
   {                       // Test [2]
-    count: 17,
+    count: config.searchLimit,
     Friday: {
-      "$avg": 0,
+      "$max": 93.18,
     },
   },
+  {                       // Test [3]
+    count: config.searchLimit,
+    Friday: {
+      "$max": 93.16,
+    },
+  },
+  {                       // Test [4]
+    done: false,
+    searchCount: 20,
+  },  
 ];
 
 const testTimeout = 6000;
@@ -87,5 +95,51 @@ describe("first-order-chunk.js", function() {
           })
           .should.eventually.deep.equal(testOutputs[test]);
     });
+
+    // Test [3]
+    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[2].index)}`, function() {
+      const test = 2;
+      let iterator;
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getFirstOrderChunk(testInputs[test].type, datasetId, testInputs[test].match, testInputs[test].fields, testInputs[test].index, apiTimeout)
+          .then((valIterator) => {
+            iterator = valIterator;
+            return iterator.next();
+          })
+          .then((val) => {
+            return Promise.resolve(val);
+          })
+          .then((val) => {
+            return iterator.next();
+          })
+          .then((val) => {
+            return Promise.resolve(val);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [4]
+    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[3].index)}`, function() {
+      const test = 3;
+      let iterator;
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getFirstOrderChunk(testInputs[test].type, datasetId, testInputs[test].match, testInputs[test].fields, testInputs[test].index, apiTimeout)
+          .then((valIterator) => {
+            iterator = valIterator;
+            return iterator.next();
+          })
+          .then((val) => {
+            return Promise.resolve(val);
+          })
+          .then((val) => {
+            return iterator.next();
+          })
+          .then((val) => {
+            return Promise.resolve({done: iterator._done, searchCount: iterator._internalParams.searchCount});
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });    
   });
 });
