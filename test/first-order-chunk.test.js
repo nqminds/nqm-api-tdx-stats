@@ -13,7 +13,7 @@ const TDXApiStats = require("../lib/api.js");
 const config = {
   "commandHost": "https://cmd.nqminds.com",
   "queryHost": "https://q.nqminds.com",
-  "searchLimit": 10,
+  "searchLimit": 2,
 };
 
 const shareKeyID = "Syl5oSTRme";
@@ -30,6 +30,7 @@ const testInputs = [
   {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$min"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
@@ -53,11 +54,17 @@ const testOutputs = [
   },
   {                       // Test [4]
     done: false,
-    searchCount: 20,
-  },  
+    iterationNumber: 2,
+  },
+  {                       // Test [5]
+    count: 50,
+    Friday: {
+      "$avg": 25.2612,
+    },
+  },    
 ];
 
-const testTimeout = 6000;
+const testTimeout = 16000;
 const apiTimeout = 1000;
 
 describe("first-order-chunk.js", function() {
@@ -137,9 +144,41 @@ describe("first-order-chunk.js", function() {
             return iterator.next();
           })
           .then((val) => {
-            return Promise.resolve({done: iterator._done, searchCount: iterator._internalParams.searchCount});
+            return Promise.resolve({done: iterator._done, iterationNumber: iterator._internalParams.iterationNumber});
           })
           .should.eventually.deep.equal(testOutputs[test]);
-    });    
+    });
+
+    // Test [5]
+    it.only(`should return getFirstOrder for index ${JSON.stringify(testInputs[4].index)}`, function() {
+      const test = 4;
+      let totalCount = 0;
+      const api = new TDXApiStats(config);
+      const initOutput = {count: 0, Friday: {"$avg": 0}};
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      return api.getFirstOrderChunk(testInputs[test].type, datasetId, testInputs[test].match, testInputs[test].fields, testInputs[test].index, apiTimeout)
+          .then((iterator) => {
+            const iterList = Array.from(new Array(iterator.getInternalParam("totalIterations")),(val,index)=>index+1);
+            return Promise.reduce(iterList, (out) => {
+              return iterator.next().then((val) => {
+                console.log(val.Friday["$min"]);
+                out.count += val.count;
+                out.Friday["$avg"] += val.Friday["$avg"];
+                
+                if (parseInt(iterator.getInternalParam("iterationNumber")) == parseInt(iterator.getInternalParam("totalIterations"))) {
+                  const totalAvg = out.Friday["$avg"] / iterator.getInternalParam("totalIterations");
+                  out.Friday["$avg"] = totalAvg;
+                }                  
+                return out;
+              });
+            }, initOutput);
+          })
+          .then((out) => {
+
+            return Promise.resolve(out);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });       
   });
 });
