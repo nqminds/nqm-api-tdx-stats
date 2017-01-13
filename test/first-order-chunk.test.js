@@ -61,7 +61,7 @@ const testOutputs = [
     Friday: {
       "$avg": 25.2612,
     },
-  },    
+  },
 ];
 
 const testTimeout = 16000;
@@ -152,7 +152,6 @@ describe("first-order-chunk.js", function() {
     // Test [5]
     it.only(`should return getFirstOrder for index ${JSON.stringify(testInputs[4].index)}`, function() {
       const test = 4;
-      let totalCount = 0;
       const api = new TDXApiStats(config);
       const initOutput = {count: 0, Friday: {"$avg": 0}};
 
@@ -165,20 +164,19 @@ describe("first-order-chunk.js", function() {
                 console.log(val.Friday["$min"]);
                 out.count += val.count;
                 out.Friday["$avg"] += val.Friday["$avg"];
-                
+
                 if (parseInt(iterator.getInternalParam("iterationNumber")) == parseInt(iterator.getInternalParam("totalIterations"))) {
                   const totalAvg = out.Friday["$avg"] / iterator.getInternalParam("totalIterations");
                   out.Friday["$avg"] = totalAvg;
-                }                  
+                }
                 return out;
               });
             }, initOutput);
           })
           .then((out) => {
-
             return Promise.resolve(out);
           })
           .should.eventually.deep.equal(testOutputs[test]);
-    });       
+    });
   });
 });
