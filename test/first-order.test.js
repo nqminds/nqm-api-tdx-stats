@@ -82,10 +82,10 @@ const testOutputs = [
   },
 ];
 
-const testTimeout = 6000;
+const testTimeout = 10000;
 const apiTimeout = 1000;
 
-describe("first-order.js", function() {
+describe.only("first-order.js", function() {
   this.timeout(testTimeout);
 
   describe(`for test dataset: ${datasetId}`, function() {

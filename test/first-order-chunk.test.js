@@ -30,7 +30,7 @@ const testInputs = [
   {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
-  {type: ["$min"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$avg"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
@@ -57,14 +57,14 @@ const testOutputs = [
     iterationNumber: 2,
   },
   {                       // Test [5]
-    count: 50,
+    count: config.searchLimit,
     Friday: {
       "$avg": 25.2612,
     },
   },
 ];
 
-const testTimeout = 16000;
+const testTimeout = 32000;
 const apiTimeout = 1000;
 
 describe("first-order-chunk.js", function() {
@@ -150,7 +150,7 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [5]
-    it.only(`should return getFirstOrder for index ${JSON.stringify(testInputs[4].index)}`, function() {
+    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[4].index)}`, function() {
       const test = 4;
       const api = new TDXApiStats(config);
       const initOutput = {count: 0, Friday: {"$avg": 0}};
@@ -161,14 +161,15 @@ describe("first-order-chunk.js", function() {
             const iterList = Array.from(new Array(iterator.getInternalParam("totalIterations")),(val,index)=>index+1);
             return Promise.reduce(iterList, (out) => {
               return iterator.next().then((val) => {
-                console.log(val.Friday["$min"]);
+                const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
                 out.count += val.count;
-                out.Friday["$avg"] += val.Friday["$avg"];
+                out.Friday["$avg"] += val.Friday["$avg"] * (parseFloat(val.count) / totalCount);
+                console.log(val.Friday["$avg"]+":"+val.count+":"+totalCount);
 
-                if (parseInt(iterator.getInternalParam("iterationNumber")) == parseInt(iterator.getInternalParam("totalIterations"))) {
-                  const totalAvg = out.Friday["$avg"] / iterator.getInternalParam("totalIterations");
-                  out.Friday["$avg"] = totalAvg;
-                }
+                // if (parseInt(iterator.getInternalParam("iterationNumber")) == parseInt(iterator.getInternalParam("totalIterations"))) {
+                //   const totalAvg = out.Friday["$avg"] / iterator.getInternalParam("totalIterations");
+                //   out.Friday["$avg"] = totalAvg;
+                // }
                 return out;
               });
             }, initOutput);
