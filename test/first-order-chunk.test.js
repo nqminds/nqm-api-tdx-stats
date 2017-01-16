@@ -209,7 +209,6 @@ describe.only("first-order-chunk.js", function() {
                     const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
                     out.count += val.count;
                     out.Friday["$avg"] += val.Friday["$avg"] * (parseFloat(val.count) / totalCount);
-                    console.log(val.Friday["$avg"]+":"+val.count+":"+totalCount);
                     return out;
                   });
                 }, initOutput);
