@@ -31,6 +31,7 @@ const testInputs = [
   {type: ["$max"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$max"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$avg"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$avg"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
@@ -62,12 +63,18 @@ const testOutputs = [
       "$avg": 25.2672,
     },
   },
+  {                       // Test [6]
+    count: 50,
+    Friday: {
+      "$avg": 25.2672,
+    },
+  },
 ];
 
 const testTimeout = 32000;
-const apiTimeout = 1000;
+const apiTimeout = 10000;
 
-describe.only("first-order-chunk.js", function() {
+describe("first-order-chunk.js", function() {
   this.timeout(testTimeout);
 
   describe(`for test dataset: ${datasetId}`, function() {
@@ -216,6 +223,32 @@ describe.only("first-order-chunk.js", function() {
           .then((out) => {
             return Promise.resolve(out);
           })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [6]
+    it.only(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[5].index)}`, function() {
+      const test = 5;
+      const api = new TDXApiStats(config);
+      const init = {count: 0, Friday: {"$avg": 0}};
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+      const processChunk = function(input, output, iterator) {
+        const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
+        output.count += input.count;
+        output.Friday["$avg"] += input.Friday["$avg"] * (parseFloat(input.count) / totalCount);
+        return output;
+      };
+
+      return api.getFirstOrderChunk(datasetId, params, processChunk, init)
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });
