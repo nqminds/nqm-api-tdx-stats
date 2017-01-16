@@ -26,10 +26,10 @@ const shareKeySecret = "root";
 const datasetId = "HygxXEFSB";
 
 const testInputs = [
-  {type: ["$min"], match: {}, fields: ["Friday"], index: []},                                    // Test [1]
-  {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
-  {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
-  {type: ["$max"], match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$min"], chunkSize: 0, match: {}, fields: ["Friday"], index: []},                                    // Test [1]
+  {type: ["$max"], chunkSize: 10, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$max"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$max"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$avg"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
@@ -41,13 +41,13 @@ const testOutputs = [
     },
   },
   {                       // Test [2]
-    count: config.chunkSize,
+    count: 10,
     Friday: {
       "$max": 93.18,
     },
   },
   {                       // Test [3]
-    count: config.chunkSize,
+    count: 20,
     Friday: {
       "$max": 93.16,
     },
@@ -59,7 +59,7 @@ const testOutputs = [
   {                       // Test [5]
     count: 50,
     Friday: {
-      "$avg": 25.2612,
+      "$avg": 25.2672,
     },
   },
 ];
@@ -67,17 +67,26 @@ const testOutputs = [
 const testTimeout = 32000;
 const apiTimeout = 1000;
 
-describe("first-order-chunk.js", function() {
+describe.only("first-order-chunk.js", function() {
   this.timeout(testTimeout);
 
   describe(`for test dataset: ${datasetId}`, function() {
     // Test [1]
-    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[0].index)}`, function() {
+    it(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[0].index)}`, function() {
       const test = 0;
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrderChunk(testInputs[test].type, datasetId, null, testInputs[test].fields, testInputs[test].index, apiTimeout)
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrderIterator(datasetId, params)
           .then((iterator) => {
             return iterator.next();
           })
@@ -88,12 +97,21 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [2]
-    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[1].index)}`, function() {
+    it(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[1].index)}`, function() {
       const test = 1;
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrderChunk(testInputs[test].type, datasetId, testInputs[test].match, testInputs[test].fields, testInputs[test].index, apiTimeout)
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrderIterator(datasetId, params)
           .then((iterator) => {
             return iterator.next();
           })
@@ -104,12 +122,21 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [3]
-    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[2].index)}`, function() {
+    it(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[2].index)}`, function() {
       const test = 2;
       let iterator;
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrderChunk(testInputs[test].type, datasetId, testInputs[test].match, testInputs[test].fields, testInputs[test].index, apiTimeout)
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrderIterator(datasetId, params)
           .then((valIterator) => {
             iterator = valIterator;
             return iterator.next();
@@ -127,12 +154,21 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [4]
-    it(`should return getFirstOrder for index ${JSON.stringify(testInputs[3].index)}`, function() {
+    it(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[3].index)}`, function() {
       const test = 3;
       let iterator;
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrderChunk(testInputs[test].type, datasetId, testInputs[test].match, testInputs[test].fields, testInputs[test].index, apiTimeout)
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrderIterator(datasetId, params)
           .then((valIterator) => {
             iterator = valIterator;
             return iterator.next();
@@ -150,26 +186,34 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [5]
-    it.only(`should return getFirstOrder for index ${JSON.stringify(testInputs[4].index)}`, function() {
+    it(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[4].index)}`, function() {
       const test = 4;
       const api = new TDXApiStats(config);
       const initOutput = {count: 0, Friday: {"$avg": 0}};
 
       api.setShareKey(shareKeyID, shareKeySecret);
-      return api.getFirstOrderChunk(testInputs[test].type, datasetId, testInputs[test].match,
-                  testInputs[test].fields, testInputs[test].index, testInputs[test].chunkSize, apiTimeout)
-          .then((iterator) => {
-            const iterList = Array.from(new Array(iterator.getInternalParam("totalIterations")),(val,index)=>index+1);
-            return Promise.reduce(iterList, (out) => {
-              return iterator.next().then((val) => {
-                const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
-                out.count += val.count;
-                out.Friday["$avg"] += val.Friday["$avg"] * (parseFloat(val.count) / totalCount);
-                console.log(val.Friday["$avg"]+":"+val.count+":"+totalCount);
-                return out;
-              });
-            }, initOutput);
-          })
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrderIterator(datasetId, params)
+              .then((iterator) => {
+                const iterList = Array.from(new Array(iterator.getInternalParam("totalIterations")), (val, index) => index + 1);
+                return Promise.reduce(iterList, (out) => {
+                  return iterator.next().then((val) => {
+                    const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
+                    out.count += val.count;
+                    out.Friday["$avg"] += val.Friday["$avg"] * (parseFloat(val.count) / totalCount);
+                    console.log(val.Friday["$avg"]+":"+val.count+":"+totalCount);
+                    return out;
+                  });
+                }, initOutput);
+              })
           .then((out) => {
             return Promise.resolve(out);
           })
