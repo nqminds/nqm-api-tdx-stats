@@ -32,6 +32,7 @@ const testInputs = [
   {type: ["$max"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$avg"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$avg"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
@@ -69,6 +70,9 @@ const testOutputs = [
       "$avg": 25.2672,
     },
   },
+  {                       // Test [7]
+    count: 50,
+  },
 ];
 
 const testTimeout = 32000;
@@ -77,7 +81,7 @@ const apiTimeout = 10000;
 describe("first-order-chunk.js", function() {
   this.timeout(testTimeout);
 
-  describe(`for test dataset: ${datasetId}`, function() {
+  describe.only(`for test dataset: ${datasetId}`, function() {
     // Test [1]
     it(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[0].index)}`, function() {
       const test = 0;
@@ -96,9 +100,6 @@ describe("first-order-chunk.js", function() {
       return api.getFirstOrderIterator(datasetId, params)
           .then((iterator) => {
             return iterator.next();
-          })
-          .then((val) => {
-            return Promise.resolve(val);
           })
           .should.eventually.deep.equal(testOutputs[test]);
     });
@@ -121,9 +122,6 @@ describe("first-order-chunk.js", function() {
       return api.getFirstOrderIterator(datasetId, params)
           .then((iterator) => {
             return iterator.next();
-          })
-          .then((val) => {
-            return Promise.resolve(val);
           })
           .should.eventually.deep.equal(testOutputs[test]);
     });
@@ -149,13 +147,7 @@ describe("first-order-chunk.js", function() {
             return iterator.next();
           })
           .then((val) => {
-            return Promise.resolve(val);
-          })
-          .then((val) => {
             return iterator.next();
-          })
-          .then((val) => {
-            return Promise.resolve(val);
           })
           .should.eventually.deep.equal(testOutputs[test]);
     });
@@ -179,9 +171,6 @@ describe("first-order-chunk.js", function() {
           .then((valIterator) => {
             iterator = valIterator;
             return iterator.next();
-          })
-          .then((val) => {
-            return Promise.resolve(val);
           })
           .then((val) => {
             return iterator.next();
@@ -220,9 +209,6 @@ describe("first-order-chunk.js", function() {
                   });
                 }, initOutput);
               })
-          .then((out) => {
-            return Promise.resolve(out);
-          })
           .should.eventually.deep.equal(testOutputs[test]);
     });
 
@@ -250,6 +236,28 @@ describe("first-order-chunk.js", function() {
       };
 
       return api.getFirstOrderChunk(datasetId, params, processChunk, init)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [7]
+    it("should return just the count for empty type", function() {
+      const test = 6;
+      const api = new TDXApiStats(config);
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrderIterator(datasetId, params)
+          .then((iterator) => {
+            return iterator.next();
+          })
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });
