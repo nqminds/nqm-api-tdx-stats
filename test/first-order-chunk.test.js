@@ -227,7 +227,7 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [6]
-    it.only(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[5].index)}`, function() {
+    it(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[5].index)}`, function() {
       const test = 5;
       const api = new TDXApiStats(config);
       const init = {count: 0, Friday: {"$avg": 0}};
@@ -241,6 +241,7 @@ describe("first-order-chunk.js", function() {
         chunkSize: testInputs[test].chunkSize,
         timeout: apiTimeout,
       };
+
       const processChunk = function(input, output, iterator) {
         const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
         output.count += input.count;

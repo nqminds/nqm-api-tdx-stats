@@ -9,15 +9,6 @@ chai.should();
 
 const TDXApiStats = require("../lib/api.js");
 
-// const configNqm = {
-//   "commandHost": "https://cmd.nq-m.com",
-//   "queryHost": "https://q.nq-m.com",
-// };
-
-// const shareKeyIDNqm = "ryelV9N3mg";
-// const shareKeySecretNqm = "root";
-// const datasetIdNqm = "Sygy_xBhml";
-
 const config = {
   "commandHost": "https://cmd.nqminds.com",
   "queryHost": "https://q.nqminds.com",
@@ -30,12 +21,13 @@ const shareKeySecret = "root";
 const datasetId = "VyZFr8hWzg";
 
 const testInputs = [
-  {type: ["$min"], fields: ["ecode"]},                                    // Test [1]
-  {type: ["$min"], fields: ["ecode", "rate"]},                            // Test [2]
-  {type: ["$min"], match: {"name": "Surrey"}, fields: ["ecode", "rate"]}, // Test [3]
-  {type: ["$min"], fields: ["ecode"]},                                    // Test [4]
-  {type: ["$min", "$max", "$avg"], fields: ["ecode", "rate"]},            // Test [5]
-  {type: ["$min", "$max", "$avg"], fields: []},                           // Test [5]
+  {type: ["$min"], fields: ["ecode"]},                                            // Test [1]
+  {type: ["$min"], fields: ["ecode", "rate"]},                                    // Test [2]
+  {type: ["$min"], match: {"name": "Surrey"}, fields: ["ecode", "rate"]},         // Test [3]
+  {type: ["$min"], fields: ["ecode"]},                                            // Test [4]
+  {type: ["$min", "$max", "$avg"], fields: ["ecode", "rate"]},                    // Test [5]
+  {type: ["$min", "$max", "$avg"], fields: []},                                   // Test [6]
+  {type: ["$stdDevPop"], match: {"BayType": "Public"}, fields: ["BayCount"]},     // Test [7]
 ];
 
 const testOutputs = [
@@ -80,10 +72,16 @@ const testOutputs = [
   {                       // Test [6]
     count: 608,
   },
+  {                       // Test [7]
+    count: 16,
+    BayCount: {
+      "$stdDevPop": 5.97,
+    },
+  },
 ];
 
 const testTimeout = 10000;
-const apiTimeout = 1000;
+const apiTimeout = 5000;
 
 describe("first-order.js", function() {
   this.timeout(testTimeout);
@@ -196,6 +194,37 @@ describe("first-order.js", function() {
 
       return api.getFirstOrder(datasetId, params)
           .then((val) => {
+            return Promise.resolve(val);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [7]
+    it.only(`should return the standard deviation for the fields ${JSON.stringify(testInputs[6].fields)}
+        with the match ${JSON.stringify(testInputs[6].match)}`, function() {
+      const configNqm = {
+        "commandHost": "https://cmd.nq-m.com",
+        "queryHost": "https://q.nq-m.com",
+      };
+
+      const shareKeyIDNqm = "ryelV9N3mg";
+      const shareKeySecretNqm = "root";
+      const datasetIdNqm = "Sygy_xBhml";
+
+      const test = 6;
+      const api = new TDXApiStats(configNqm);
+
+      api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrder(datasetIdNqm, params)
+          .then((val) => {
+            val["BayCount"]["$stdDevPop"] = Math.round(parseFloat(val["BayCount"]["$stdDevPop"]) * 100) / 100;
             return Promise.resolve(val);
           })
           .should.eventually.deep.equal(testOutputs[test]);
