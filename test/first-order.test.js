@@ -8,26 +8,37 @@ chai.use(chaiAsPromised);
 chai.should();
 
 const TDXApiStats = require("../lib/api.js");
-
 const config = {
   "commandHost": "https://cmd.nqminds.com",
   "queryHost": "https://q.nqminds.com",
 };
-
 const shareKeyID = "Syl5oSTRme";
 const shareKeySecret = "root";
 
-// Educational achievements from Toby's nqminds account'
+// Toby Ealden/Big data/Educational achievements
 const datasetId = "VyZFr8hWzg";
 
+const configNqm = {
+  "commandHost": "https://cmd.nq-m.com",
+  "queryHost": "https://q.nq-m.com",
+};
+
+const shareKeyIDNqm = "ryelV9N3mg";
+const shareKeySecretNqm = "root";
+
+// Alexandru Mereacre/1 Test/MK Parking Locations
+const datasetIdNqm = "Sygy_xBhml";
+
 const testInputs = [
-  {type: ["$min"], fields: ["ecode"]},                                            // Test [1]
-  {type: ["$min"], fields: ["ecode", "rate"]},                                    // Test [2]
-  {type: ["$min"], match: {"name": "Surrey"}, fields: ["ecode", "rate"]},         // Test [3]
-  {type: ["$min"], fields: ["ecode"]},                                            // Test [4]
-  {type: ["$min", "$max", "$avg"], fields: ["ecode", "rate"]},                    // Test [5]
-  {type: ["$min", "$max", "$avg"], fields: []},                                   // Test [6]
-  {type: ["$stdDevPop"], match: {"BayType": "Public"}, fields: ["BayCount"]},     // Test [7]
+  {type: ["$min"], fields: ["ecode"]},                                                  // Test [1]
+  {type: ["$min"], fields: ["ecode", "rate"]},                                          // Test [2]
+  {type: ["$min"], match: {"name": "Surrey"}, fields: ["ecode", "rate"]},               // Test [3]
+  {type: ["$min"], fields: ["ecode"]},                                                  // Test [4]
+  {type: ["$min", "$max", "$avg"], fields: ["ecode", "rate"]},                          // Test [5]
+  {type: ["$min", "$max", "$avg"], fields: []},                                         // Test [6]
+  {type: ["$stdDevPop"], match: {"BayType": "Public"}, fields: ["BayCount"]},           // Test [7]
+  {type: [], match: {"BayType": "Electric"}, fields: ["BayCount", "LotCode"]},          // Test [8]
+  {type: [], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},     // Test [9]
 ];
 
 const testOutputs = [
@@ -78,10 +89,28 @@ const testOutputs = [
       "$stdDevPop": 5.97,
     },
   },
+  {                       // Test [8]
+    count: 2,
+    BayCount: {
+      "$med": 3.5,
+    },
+    LotCode: {
+      "$med": 4.5,
+    },
+  },
+  {                       // Test [9]
+    count: 3,
+    BayCount: {
+      "$med": 2,
+    },
+    LotCode: {
+      "$med": 12,
+    },
+  },
 ];
 
-const testTimeout = 10000;
-const apiTimeout = 5000;
+const testTimeout = 20000;
+const apiTimeout = 10000;
 
 describe("first-order.js", function() {
   this.timeout(testTimeout);
@@ -200,17 +229,8 @@ describe("first-order.js", function() {
     });
 
     // Test [7]
-    it.only(`should return the standard deviation for the fields ${JSON.stringify(testInputs[6].fields)}
+    it(`should return the standard deviation for the fields ${JSON.stringify(testInputs[6].fields)}
         with the match ${JSON.stringify(testInputs[6].match)}`, function() {
-      const configNqm = {
-        "commandHost": "https://cmd.nq-m.com",
-        "queryHost": "https://q.nq-m.com",
-      };
-
-      const shareKeyIDNqm = "ryelV9N3mg";
-      const shareKeySecretNqm = "root";
-      const datasetIdNqm = "Sygy_xBhml";
-
       const test = 6;
       const api = new TDXApiStats(configNqm);
 
@@ -227,6 +247,30 @@ describe("first-order.js", function() {
             val["BayCount"]["$stdDevPop"] = Math.round(parseFloat(val["BayCount"]["$stdDevPop"]) * 100) / 100;
             return Promise.resolve(val);
           })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [8]
+    it(`should return the median for the fields ${JSON.stringify(testInputs[7].fields)}
+        with the match ${JSON.stringify(testInputs[7].match)}`, function() {
+      const test = 7;
+      const api = new TDXApiStats(configNqm);
+
+      api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+      return api.getMed(datasetIdNqm, testInputs[test].match, testInputs[test].fields, apiTimeout)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [9]
+    it(`should return the median for the fields ${JSON.stringify(testInputs[8].fields)}
+        with the match ${JSON.stringify(testInputs[8].match)}`, function() {
+      const test = 8;
+      const api = new TDXApiStats(configNqm);
+
+      api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+      return api.getMed(datasetIdNqm, testInputs[test].match, testInputs[test].fields, apiTimeout)
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });
