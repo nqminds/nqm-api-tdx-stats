@@ -39,6 +39,12 @@ const testInputs = [
   {type: ["$stdDevPop"], match: {"BayType": "Public"}, fields: ["BayCount"]},           // Test [7]
   {type: [], match: {"BayType": "Electric"}, fields: ["BayCount", "LotCode"]},          // Test [8]
   {type: [], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},     // Test [9]
+  {type: [], match: {"BayType": "Mobility"}, fields: ["BayCount", "LotCode"]},          // Test [10]
+  {type: [], match: {"BayType": "Mobility bays"}, fields: []},                          // Test [11]
+  {type: ["$min"], match: {"name": "Surrrey"}, fields: ["ecode"]},                      // Test [12]
+  {type: [], fields: ["ecode"]},                                                        // Test [13]
+  {type: ["$min"], fields: []},                                                         // Test [14]
+  {type: [], fields: []},                                                               // Test [15]
 ];
 
 const testOutputs = [
@@ -107,6 +113,24 @@ const testOutputs = [
       "$med": 12,
     },
   },
+  {                       // Test [10]
+    count: 0,
+  },
+  {                       // Test [11]
+    count: 3,
+  },
+  {                       // Test [12]
+    count: 0,
+  },
+  {                       // Test [13]
+    count: 608,
+  },
+  {                       // Test [14]
+    count: 608,
+  },
+  {                       // Test [15]
+    count: 608,
+  },
 ];
 
 const testTimeout = 20000;
@@ -129,11 +153,9 @@ describe("first-order.js", function() {
       };
 
       return api.getFirstOrder(datasetId, params)
-          .then((val) => {
-            return Promise.resolve(val);
-          })
           .should.eventually.deep.equal(testOutputs[test]);
     });
+
     // Test [2]
     it(`should return the minimum for the fields ${JSON.stringify(testInputs[1].fields)}`, function() {
       const test = 1;
@@ -147,9 +169,6 @@ describe("first-order.js", function() {
       };
 
       return api.getFirstOrder(datasetId, params)
-          .then((val) => {
-            return Promise.resolve(val);
-          })
           .should.eventually.deep.equal(testOutputs[1]);
     });
 
@@ -167,9 +186,6 @@ describe("first-order.js", function() {
         timeout: apiTimeout,
       };
       return api.getFirstOrder(datasetId, params)
-          .then((val) => {
-            return Promise.resolve(val);
-          })
           .should.eventually.deep.equal(testOutputs[test]);
     });
 
@@ -203,9 +219,6 @@ describe("first-order.js", function() {
       };
 
       return api.getFirstOrder(datasetId, params)
-          .then((val) => {
-            return Promise.resolve(val);
-          })
           .should.eventually.deep.equal(testOutputs[test]);
     });
 
@@ -222,9 +235,6 @@ describe("first-order.js", function() {
       };
 
       return api.getFirstOrder(datasetId, params)
-          .then((val) => {
-            return Promise.resolve(val);
-          })
           .should.eventually.deep.equal(testOutputs[test]);
     });
 
@@ -271,6 +281,98 @@ describe("first-order.js", function() {
       api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
 
       return api.getMed(datasetIdNqm, testInputs[test].match, testInputs[test].fields, apiTimeout)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [10]
+    it(`should return the median for the fields ${JSON.stringify(testInputs[9].fields)}
+        with the match ${JSON.stringify(testInputs[9].match)}`, function() {
+      const test = 9;
+      const api = new TDXApiStats(configNqm);
+
+      api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+      return api.getMed(datasetIdNqm, testInputs[test].match, testInputs[test].fields, apiTimeout)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [11]
+    it(`should return the median for the fields ${JSON.stringify(testInputs[10].fields)}
+        with the match ${JSON.stringify(testInputs[10].match)}`, function() {
+      const test = 10;
+      const api = new TDXApiStats(configNqm);
+
+      api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+      return api.getMed(datasetIdNqm, testInputs[test].match, testInputs[test].fields, apiTimeout)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [12]
+    it("should return count=0 for wrong match", function() {
+      const test = 11;
+
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        fields: testInputs[test].fields,
+        match: testInputs[test].match,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrder(datasetId, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [13]
+    it("should return just the count for empty type", function() {
+      const test = 12;
+
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        fields: testInputs[test].fields,
+        match: testInputs[test].match,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrder(datasetId, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [14]
+    it("should return just the count for empty fields", function() {
+      const test = 13;
+
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        fields: testInputs[test].fields,
+        match: testInputs[test].match,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrder(datasetId, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [15]
+    it("should return just the count for empty fields and type", function() {
+      const test = 14;
+
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        fields: testInputs[test].fields,
+        match: testInputs[test].match,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrder(datasetId, params)
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });
