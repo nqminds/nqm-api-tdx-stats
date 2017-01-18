@@ -33,6 +33,9 @@ const testInputs = [
   {type: ["$avg"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$avg"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$min"], chunkSize: 0, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: ["$min"], chunkSize: 0, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
@@ -72,6 +75,21 @@ const testOutputs = [
   },
   {                       // Test [7]
     count: 50,
+  },
+  {                       // Test [8]
+    count: 50,
+  },
+  {                       // Test [9]
+    count: 50,
+    Friday: {
+      "$min": 0.41,
+    },
+  },
+  {                       // Test [10]
+    count: 50,
+    Friday: {
+      "$min": 0.41,
+    },
   },
 ];
 
@@ -258,6 +276,78 @@ describe("first-order-chunk.js", function() {
           .then((iterator) => {
             return iterator.next();
           })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [8]
+    it("should return just the count for empty type", function() {
+      const test = 7;
+      const api = new TDXApiStats(config);
+      const init = {count: 0};
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      const processChunk = function(input, output, iterator) {
+        return output;
+      };
+
+      return api.getFirstOrderChunk(datasetId, params, processChunk, init)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [9]
+    it("should return just the count for zero chunkSize", function() {
+      const test = 8;
+      const api = new TDXApiStats(config);
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrderIterator(datasetId, params)
+          .then((iterator) => {
+            return iterator.next();
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [10]
+    it.only("should return just the count for zero chunkSize", function() {
+      const test = 9;
+      const api = new TDXApiStats(config);
+      const init = {count: 0, Friday: {"$min": Infinity}};
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      const processChunk = function(input, output, iterator) {
+        output.count += input.count;
+        output.Friday["$min"] = Math.min(output.Friday["$min"], input.Friday["$min"]);
+        return output;
+      };
+
+      return api.getFirstOrderChunk(datasetId, params, processChunk, init)
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });
