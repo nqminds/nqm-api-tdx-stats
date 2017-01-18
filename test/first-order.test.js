@@ -45,6 +45,7 @@ const testInputs = [
   {type: [], fields: ["ecode"]},                                                        // Test [13]
   {type: ["$min"], fields: []},                                                         // Test [14]
   {type: [], fields: []},                                                               // Test [15]
+  {type: ["$min"], fields: ["eccode", "rrate"]},                                         // Test [16]
 ];
 
 const testOutputs = [
@@ -130,6 +131,15 @@ const testOutputs = [
   },
   {                       // Test [15]
     count: 608,
+  },
+  {                       // Test [16]
+    count: 608,
+    eccode: {
+      "$min": null,
+    },
+    rrate: {
+      "$min": null,
+    },
   },
 ];
 
@@ -362,6 +372,23 @@ describe("first-order.js", function() {
     // Test [15]
     it("should return just the count for empty fields and type", function() {
       const test = 14;
+
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        fields: testInputs[test].fields,
+        match: testInputs[test].match,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrder(datasetId, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [16]
+    it("should return error for wrong field", function() {
+      const test = 15;
 
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
