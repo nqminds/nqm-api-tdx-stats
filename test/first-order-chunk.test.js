@@ -13,7 +13,6 @@ const TDXApiStats = require("../lib/api.js");
 const config = {
   "commandHost": "https://cmd.nqminds.com",
   "queryHost": "https://q.nqminds.com",
-  "chunkSize": 2,
 };
 
 const shareKeyID = "Syl5oSTRme";
@@ -39,6 +38,9 @@ const testInputs = [
   {type: ["$min"], chunkSize: 20, match: {"$and": [{"SID": "20212"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$min"], chunkSize: 20, match: {"$and": [{"SID": "20212"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$min"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SSID", "HHWRC", "Waste_Type", "NNID", "Contract", "First_Movement"]},
+  {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
@@ -104,6 +106,42 @@ const testOutputs = [
     count: 50,
     Friday: {
       "$avg": 25.2672,
+    },
+  },
+  {                       // Test [14]
+    count: 50,
+    Friday: {
+      "$min": 0.41,
+    },
+    Cost: {
+      "$min": 116.06,
+    },
+  },
+  {                       // Test [15]
+    count: 50,
+    Friday: {
+      "$max": 93.18,
+    },
+    Cost: {
+      "$max": 18908.97,
+    },
+  },
+  {                       // Test [16]
+    count: 50,
+    Friday: {
+      "$sum": 1263,
+    },
+    Cost: {
+      "$sum": 274400,
+    },
+  },
+  {                       // Test [17]
+    count: 50,
+    Friday: {
+      "$avg": 25.2672,
+    },
+    Cost: {
+      "$avg": 5488.011600000001,
     },
   },
 ];
@@ -439,6 +477,68 @@ describe("first-order-chunk.js", function() {
 
       return api.getFirstOrderChunk(datasetId, params, processChunk, init)
           .should.be.rejected;
+    });
+
+    // Test [14]
+    it(`should return the minimum for index ${JSON.stringify(testInputs[13].index)}`, function() {
+      const test = 13;
+      const api = new TDXApiStats(config);
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getMinChunk(datasetId, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [15]
+    it(`should return the maximum for index ${JSON.stringify(testInputs[14].index)}`, function() {
+      const test = 14;
+      const api = new TDXApiStats(config);
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getMaxChunk(datasetId, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [16]
+    it.only(`should return the sum for index ${JSON.stringify(testInputs[15].index)}`, function() {
+      const test = 15;
+      const api = new TDXApiStats(config);
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getSumChunk(datasetId, params)
+          .then((val) => {
+            val.Friday["$sum"] = parseInt(val.Friday["$sum"]);
+            val.Cost["$sum"] = parseInt(val.Cost["$sum"]);
+            return Promise.resolve(val);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
     });
   });
 });
