@@ -11,18 +11,15 @@ chai.should();
 const TDXApiStats = require("../lib/api.js");
 
 const config = {
-  "commandHost": "https://cmd.nqminds.com",
-  "queryHost": "https://q.nqminds.com",
+  "commandHost": "https://cmd.nq-m.com",
+  "queryHost": "https://q.nq-m.com",
 };
 
-const shareKeyID = "Syl5oSTRme";
+const shareKeyID = "ryelV9N3mg";
 const shareKeySecret = "root";
 
-// Educational achievements from Toby's nqminds account'
-// const datasetId = "VyZFr8hWzg";
-
-// Leo Valberg: hcc waste/cost-output
-const datasetId = "HygxXEFSB";
+// Alexandru Mereacre: Test 1/cost-output
+const datasetId = "rklWhQU0Ue";
 
 const testInputs = [
   {type: ["$min"], chunkSize: 0, match: {}, fields: ["Friday"], index: []},                                    // Test [1]
@@ -38,6 +35,7 @@ const testInputs = [
   {type: ["$min"], chunkSize: 20, match: {"$and": [{"SID": "20212"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$min"], chunkSize: 20, match: {"$and": [{"SID": "20212"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: ["$min"], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday"], index: ["SSID", "HHWRC", "Waste_Type", "NNID", "Contract", "First_Movement"]},
+  {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
@@ -138,10 +136,10 @@ const testOutputs = [
   {                       // Test [17]
     count: 50,
     Friday: {
-      "$avg": 25.2672,
+      "$avg": 25,
     },
     Cost: {
-      "$avg": 5488.011600000001,
+      "$avg": 5488,
     },
   },
 ];
@@ -149,7 +147,7 @@ const testOutputs = [
 const testTimeout = 32000;
 const apiTimeout = 10000;
 
-describe("first-order-chunk.js", function() {
+describe.only("first-order-chunk.js", function() {
   this.timeout(testTimeout);
 
   describe(`for test dataset: ${datasetId}`, function() {
@@ -518,7 +516,7 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [16]
-    it.only(`should return the sum for index ${JSON.stringify(testInputs[15].index)}`, function() {
+    it(`should return the sum for index ${JSON.stringify(testInputs[15].index)}`, function() {
       const test = 15;
       const api = new TDXApiStats(config);
 
@@ -536,6 +534,30 @@ describe("first-order-chunk.js", function() {
           .then((val) => {
             val.Friday["$sum"] = parseInt(val.Friday["$sum"]);
             val.Cost["$sum"] = parseInt(val.Cost["$sum"]);
+            return Promise.resolve(val);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [17]
+    it(`should return the sum for index ${JSON.stringify(testInputs[16].index)}`, function() {
+      const test = 16;
+      const api = new TDXApiStats(config);
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        timeout: apiTimeout,
+      };
+
+      return api.getAvgChunk(datasetId, params)
+          .then((val) => {
+            val.Friday["$avg"] = parseInt(val.Friday["$avg"]);
+            val.Cost["$avg"] = parseInt(val.Cost["$avg"]);
             return Promise.resolve(val);
           })
           .should.eventually.deep.equal(testOutputs[test]);
