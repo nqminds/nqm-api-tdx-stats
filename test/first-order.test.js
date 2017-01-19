@@ -51,68 +51,40 @@ const testInputs = [
 const testOutputs = [
   {                       // Test [1]
     count: 608,
-    ecode: {
-      "$min": 201,
-    },
+    ecode: [201],
   },
   {                       // Test [2]
     count: 608,
-    ecode: {
-      "$min": 201,
-    },
-    rate: {
-      "$min": 0,
-    },
+    ecode: [201],
+    rate: [0],
   },
   {                       // Test [3]
     count: 4,
-    ecode: {
-      "$min": 936,
-    },
-    rate: {
-      "$min": 30,
-    },
+    ecode: [936],
+    rate: [30],
   },
   {},                     // Test [4]
   {                       // Test [5]
     count: 608,
-    ecode: {
-      "$min": 201,
-      "$max": 938,
-      "$avg": 613.578947368421,
-    },
-    rate: {
-      "$min": 0,
-      "$max": 166,
-      "$avg": 63.41940789473684,
-    },
+    ecode: [201, 938, 613.578947368421],
+    rate: [0, 166, 63.41940789473684],
   },
   {                       // Test [6]
     count: 608,
   },
   {                       // Test [7]
     count: 16,
-    BayCount: {
-      "$stdDevPop": 5.97,
-    },
+    BayCount: [5.967359131140006],
   },
   {                       // Test [8]
     count: 2,
-    BayCount: {
-      "$med": 3.5,
-    },
-    LotCode: {
-      "$med": 4.5,
-    },
+    BayCount: [3.5],
+    LotCode: [4.5],
   },
   {                       // Test [9]
     count: 3,
-    BayCount: {
-      "$med": 2,
-    },
-    LotCode: {
-      "$med": 12,
-    },
+    BayCount: [2],
+    LotCode: [12],
   },
   {                       // Test [10]
     count: 0,
@@ -134,12 +106,8 @@ const testOutputs = [
   },
   {                       // Test [16]
     count: 608,
-    eccode: {
-      "$min": null,
-    },
-    rrate: {
-      "$min": null,
-    },
+    eccode: [null],
+    rrate: [null],
   },
 ];
 
@@ -263,10 +231,10 @@ describe("first-order.js", function() {
       };
 
       return api.getFirstOrder(datasetIdNqm, params)
-          .then((val) => {
-            val["BayCount"]["$stdDevPop"] = Math.round(parseFloat(val["BayCount"]["$stdDevPop"]) * 100) / 100;
-            return Promise.resolve(val);
-          })
+          // .then((val) => {
+          //   val["BayCount"]["$stdDevPop"] = Math.round(parseFloat(val["BayCount"]["$stdDevPop"]) * 100) / 100;
+          //   return Promise.resolve(val);
+          // })
           .should.eventually.deep.equal(testOutputs[test]);
     });
 
