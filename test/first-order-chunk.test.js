@@ -39,6 +39,7 @@ const testInputs = [
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
@@ -109,6 +110,11 @@ const testOutputs = [
     count: 50,
     Friday: [25],
     Cost: [5488],
+  },
+  {                       // Test [18]
+    count: 50,
+    Friday: [35.808656665113816],
+    Cost: [7301.448916175846],
   },
 ];
 
@@ -508,7 +514,7 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [17]
-    it(`should return the sum for index ${JSON.stringify(testInputs[16].index)}`, function() {
+    it(`should return the average for index ${JSON.stringify(testInputs[16].index)}`, function() {
       const test = 16;
       const api = new TDXApiStats(config);
 
@@ -528,6 +534,31 @@ describe("first-order-chunk.js", function() {
             val.Cost[0] = parseInt(val.Cost[0]);
             return Promise.resolve(val);
           })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [18]
+    it.only(`should return the std population for index ${JSON.stringify(testInputs[17].index)}`, function() {
+      const test = 17;
+      const api = new TDXApiStats(config);
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        distribution: "population",
+        timeout: apiTimeout,
+      };
+
+      return api.getStdChunk(datasetId, params)
+          // .then((val) => {
+          //   val.Friday[0] = parseInt(val.Friday[0]);
+          //   val.Cost[0] = parseInt(val.Cost[0]);
+          //   return Promise.resolve(val);
+          // })
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });

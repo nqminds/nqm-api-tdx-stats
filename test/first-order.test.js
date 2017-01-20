@@ -378,7 +378,7 @@ describe("first-order.js", function() {
     });
 
     // Test [17]
-    it.only(`should return the minimum and sum of powers fields ${JSON.stringify(testInputs[0].fields)}`, function() {
+    it(`should return the minimum and sum of powers fields ${JSON.stringify(testInputs[0].fields)}`, function() {
       const test = 16;
 
       const api = new TDXApiStats(configNqm);
