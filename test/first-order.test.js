@@ -30,22 +30,22 @@ const shareKeySecretNqm = "root";
 const datasetIdNqm = "Sygy_xBhml";
 
 const testInputs = [
-  {type: ["$min"], fields: ["ecode"]},                                                  // Test [1]
-  {type: ["$min"], fields: ["ecode", "rate"]},                                          // Test [2]
-  {type: ["$min"], match: {"name": "Surrey"}, fields: ["ecode", "rate"]},               // Test [3]
-  {type: ["$min"], fields: ["ecode"]},                                                  // Test [4]
-  {type: ["$min", "$max", "$avg"], fields: ["ecode", "rate"]},                          // Test [5]
-  {type: ["$min", "$max", "$avg"], fields: []},                                         // Test [6]
-  {type: ["$stdDevPop"], match: {"BayType": "Public"}, fields: ["BayCount"]},           // Test [7]
+  {type: [{"$min": "$$"}], fields: ["ecode"]},                                                  // Test [1]
+  {type: [{"$min": "$$"}], fields: ["ecode", "rate"]},                                          // Test [2]
+  {type: [{"$min": "$$"}], match: {"name": "Surrey"}, fields: ["ecode", "rate"]},               // Test [3]
+  {type: [{"$min": "$$"}], fields: ["ecode"]},                                                  // Test [4]
+  {type: [{"$min": "$$"}, {"$max": "$$"}, {"$avg": "$$"}], fields: ["ecode", "rate"]},                          // Test [5]
+  {type: [{"$min": "$$"}, {"$max": "$$"}, {"$avg": "$$"}], fields: []},                                         // Test [6]
+  {type: [{"$stdDevPop": "$$"}], match: {"BayType": "Public"}, fields: ["BayCount"]},           // Test [7]
   {type: [], match: {"BayType": "Electric"}, fields: ["BayCount", "LotCode"]},          // Test [8]
   {type: [], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},     // Test [9]
   {type: [], match: {"BayType": "Mobility"}, fields: ["BayCount", "LotCode"]},          // Test [10]
   {type: [], match: {"BayType": "Mobility bays"}, fields: []},                          // Test [11]
-  {type: ["$min"], match: {"name": "Surrrey"}, fields: ["ecode"]},                      // Test [12]
+  {type: [{"$min": "$$"}], match: {"name": "Surrrey"}, fields: ["ecode"]},                      // Test [12]
   {type: [], fields: ["ecode"]},                                                        // Test [13]
-  {type: ["$min"], fields: []},                                                         // Test [14]
+  {type: [{"$min": "$$"}], fields: []},                                                         // Test [14]
   {type: [], fields: []},                                                               // Test [15]
-  {type: ["$min"], fields: ["eccode", "rrate"]},                                         // Test [16]
+  {type: [{"$min": "$$"}], fields: ["eccode", "rrate"]},                                         // Test [16]
 ];
 
 const testOutputs = [
