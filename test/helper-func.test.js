@@ -44,7 +44,7 @@ const testOutputs = [
   {obj: {"A": [{B: {D: "$name"}}, {C: "$name"}]}},                                                // Test[10]
 ];
 
-describe.only("helper-func.js", function() {
+describe("helper-func.js", function() {
     // Test [1-3]
   it(`should return the added match for index filter: ${JSON.stringify(testInputs[0].indexFilter)}`, function() {
     let test = 0;
