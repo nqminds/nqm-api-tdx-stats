@@ -44,21 +44,15 @@ const testInputs = [
 const testOutputs = [
   {                       // Test [1]
     count: 27520,
-    Friday: {
-      "$min": 0,
-    },
+    Friday: [0],
   },
   {                       // Test [2]
     count: 10,
-    Friday: {
-      "$max": 93.18,
-    },
+    Friday: [93.18],
   },
   {                       // Test [3]
     count: 20,
-    Friday: {
-      "$max": 93.16,
-    },
+    Friday: [93.16],
   },
   {                       // Test [4]
     done: false,
@@ -66,15 +60,11 @@ const testOutputs = [
   },
   {                       // Test [5]
     count: 50,
-    Friday: {
-      "$avg": 25.2672,
-    },
+    Friday: [25.2672],
   },
   {                       // Test [6]
     count: 50,
-    Friday: {
-      "$avg": 25.2672,
-    },
+    Friday: [25.2672],
   },
   {                       // Test [7]
     count: 50,
@@ -84,15 +74,11 @@ const testOutputs = [
   },
   {                       // Test [9]
     count: 50,
-    Friday: {
-      "$min": 0.41,
-    },
+    Friday: [0.41],
   },
   {                       // Test [10]
     count: 50,
-    Friday: {
-      "$min": 0.41,
-    },
+    Friday: [0.41],
   },
   {                       // Test [11]
     count: 0,
@@ -102,52 +88,34 @@ const testOutputs = [
   },
   {                       // Test [13]
     count: 50,
-    Friday: {
-      "$avg": 25.2672,
-    },
+    Friday: [25.2672],
   },
   {                       // Test [14]
     count: 50,
-    Friday: {
-      "$min": 0.41,
-    },
-    Cost: {
-      "$min": 116.06,
-    },
+    Friday: [0.41],
+    Cost: [116.06],
   },
   {                       // Test [15]
     count: 50,
-    Friday: {
-      "$max": 93.18,
-    },
-    Cost: {
-      "$max": 18908.97,
-    },
+    Friday: [93.18],
+    Cost: [18908.97],
   },
   {                       // Test [16]
     count: 50,
-    Friday: {
-      "$sum": 1263,
-    },
-    Cost: {
-      "$sum": 274400,
-    },
+    Friday: [1263],
+    Cost: [274400],
   },
   {                       // Test [17]
     count: 50,
-    Friday: {
-      "$avg": 25,
-    },
-    Cost: {
-      "$avg": 5488,
-    },
+    Friday: [25],
+    Cost: [5488],
   },
 ];
 
 const testTimeout = 32000;
 const apiTimeout = 10000;
 
-describe.only("first-order-chunk.js", function() {
+describe("first-order-chunk.js", function() {
   this.timeout(testTimeout);
 
   describe(`for test dataset: ${datasetId}`, function() {
@@ -254,7 +222,7 @@ describe.only("first-order-chunk.js", function() {
     it(`should return getFirstOrderIterator for index ${JSON.stringify(testInputs[4].index)}`, function() {
       const test = 4;
       const api = new TDXApiStats(config);
-      const initOutput = {count: 0, Friday: {"$avg": 0}};
+      const initOutput = {count: 0, Friday: [0]};
 
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
@@ -273,7 +241,7 @@ describe.only("first-order-chunk.js", function() {
                   return iterator.next().then((val) => {
                     const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
                     out.count += val.count;
-                    out.Friday["$avg"] += val.Friday["$avg"] * (parseFloat(val.count) / totalCount);
+                    out.Friday[0] += val.Friday[0] * (parseFloat(val.count) / totalCount);
                     return out;
                   });
                 }, initOutput);
@@ -285,7 +253,7 @@ describe.only("first-order-chunk.js", function() {
     it(`should return getFirstOrderChunk for index ${JSON.stringify(testInputs[5].index)}`, function() {
       const test = 5;
       const api = new TDXApiStats(config);
-      const init = {count: 0, Friday: {"$avg": 0}};
+      const init = {count: 0, Friday: [0]};
 
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
@@ -300,7 +268,7 @@ describe.only("first-order-chunk.js", function() {
       const processChunk = function(input, output, iterator) {
         const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
         output.count += input.count;
-        output.Friday["$avg"] += input.Friday["$avg"] * (parseFloat(input.count) / totalCount);
+        output.Friday[0] += input.Friday[0] * (parseFloat(input.count) / totalCount);
         return output;
       };
 
@@ -380,7 +348,7 @@ describe.only("first-order-chunk.js", function() {
     it("should return just the count for zero chunkSize", function() {
       const test = 9;
       const api = new TDXApiStats(config);
-      const init = {count: 0, Friday: {"$min": Infinity}};
+      const init = {count: 0, Friday: [Infinity]};
 
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
@@ -394,7 +362,7 @@ describe.only("first-order-chunk.js", function() {
 
       const processChunk = function(input, output, iterator) {
         output.count += input.count;
-        output.Friday["$min"] = Math.min(output.Friday["$min"], input.Friday["$min"]);
+        output.Friday[0] = Math.min(output.Friday[0], input.Friday[0]);
         return output;
       };
 
@@ -428,7 +396,7 @@ describe.only("first-order-chunk.js", function() {
     it("should return just the count for zero chunkSize", function() {
       const test = 11;
       const api = new TDXApiStats(config);
-      const init = {count: 0, Friday: {"$min": Infinity}};
+      const init = {count: 0, Friday: [Infinity]};
 
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
@@ -442,7 +410,7 @@ describe.only("first-order-chunk.js", function() {
 
       const processChunk = function(input, output, iterator) {
         output.count += input.count;
-        output.Friday["$min"] = Math.min(output.Friday["$min"], input.Friday["$min"]);
+        output.Friday[0] = Math.min(output.Friday[0], input.Friday[0]);
         return output;
       };
 
@@ -454,7 +422,7 @@ describe.only("first-order-chunk.js", function() {
     it("should return error for incorrect index", function() {
       const test = 12;
       const api = new TDXApiStats(config);
-      const init = {count: 0, Friday: {"$avg": 0}};
+      const init = {count: 0, Friday: [0]};
 
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
@@ -469,7 +437,7 @@ describe.only("first-order-chunk.js", function() {
       const processChunk = function(input, output, iterator) {
         const totalCount = parseFloat(iterator.getInternalParam("totalCount"));
         output.count += input.count;
-        output.Friday["$avg"] += input.Friday["$avg"] * (parseFloat(input.count) / totalCount);
+        output.Friday[0] += input.Friday[0] * (parseFloat(input.count) / totalCount);
         return output;
       };
 
@@ -532,8 +500,8 @@ describe.only("first-order-chunk.js", function() {
 
       return api.getSumChunk(datasetId, params)
           .then((val) => {
-            val.Friday["$sum"] = parseInt(val.Friday["$sum"]);
-            val.Cost["$sum"] = parseInt(val.Cost["$sum"]);
+            val.Friday[0] = parseInt(val.Friday[0]);
+            val.Cost[0] = parseInt(val.Cost[0]);
             return Promise.resolve(val);
           })
           .should.eventually.deep.equal(testOutputs[test]);
@@ -556,8 +524,8 @@ describe.only("first-order-chunk.js", function() {
 
       return api.getAvgChunk(datasetId, params)
           .then((val) => {
-            val.Friday["$avg"] = parseInt(val.Friday["$avg"]);
-            val.Cost["$avg"] = parseInt(val.Cost["$avg"]);
+            val.Friday[0] = parseInt(val.Friday[0]);
+            val.Cost[0] = parseInt(val.Cost[0]);
             return Promise.resolve(val);
           })
           .should.eventually.deep.equal(testOutputs[test]);
