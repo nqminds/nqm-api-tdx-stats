@@ -46,6 +46,7 @@ const testInputs = [
   {type: [{"$min": "$$"}], fields: []},                                                         // Test [14]
   {type: [], fields: []},                                                               // Test [15]
   {type: [{"$min": "$$"}], fields: ["eccode", "rrate"]},                                         // Test [16]
+  {type: [{"$min": "$$"}, {"$sum": {"$pow": ["$$", 2]}}], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},          // Test [17]
 ];
 
 const testOutputs = [
@@ -108,6 +109,11 @@ const testOutputs = [
     count: 608,
     eccode: [null],
     rrate: [null],
+  },
+  {                       // Test [17]
+    count: 3,
+    BayCount: [2, 24],
+    LotCode: [5, 493],
   },
 ];
 
@@ -368,6 +374,23 @@ describe("first-order.js", function() {
       };
 
       return api.getFirstOrder(datasetId, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [17]
+    it.only(`should return the minimum and sum of powers fields ${JSON.stringify(testInputs[0].fields)}`, function() {
+      const test = 16;
+
+      const api = new TDXApiStats(configNqm);
+      api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+      const params = {
+        type: testInputs[test].type,
+        fields: testInputs[test].fields,
+        match: testInputs[test].match,
+        timeout: apiTimeout,
+      };
+
+      return api.getFirstOrder(datasetIdNqm, params)
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });
