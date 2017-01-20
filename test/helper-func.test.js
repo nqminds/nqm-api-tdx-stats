@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 "use strict";
 
+const _ = require("lodash");
 const chai = require("chai");
 const expect = chai.expect;
 
@@ -17,6 +18,10 @@ const testInputs = [
   {obj: {"A": "$$"}, field: ""},                                                          // Test [8]
   {obj: {"A": "$$"}, field: "name"},                                                      // Test [9]
   {obj: {"A": [{B: {D: "$$"}}, {C: "$$"}]}, field: "name"},                               // Test [10]
+  {type: {item: 1, billing_date: {"$add": ["$date", 12312]}}, fields: ["name"]},          // Test [11]
+  {type: {delta: {$abs: {$subtract: ["$start", "$end"]}}}, fields: []},                   // Test [12]
+  {type: {delta: {$abs: {$subtract: ["$start", "$end"]}}}, fields: ["start"]},            // Test [13]
+  {type: {date: 1, item: 1, total: {$multiply: ["$price", "$$"]}}, fields: []},           // Test [14]
 ];
 
 const testOutputs = [
@@ -42,6 +47,10 @@ const testOutputs = [
   {obj: {}},                                                                                      // Test[8]
   {obj: {"A": "$name"}},                                                                          // Test[9]
   {obj: {"A": [{B: {D: "$name"}}, {C: "$name"}]}},                                                // Test[10]
+  {fields: ["name", "date"]},                                                                     // Test[11]
+  {fields: ["start", "end"]},                                                                     // Test[12]
+  {fields: ["end"]},                                                                     // Test[13]
+  {fields: ["price"]},                                                                            // Test[14]
 ];
 
 describe("helper-func.js", function() {
@@ -94,5 +103,24 @@ describe("helper-func.js", function() {
     test = 9;
     ret = helper.replaceField(testInputs[test].obj, testInputs[test].field);
     expect(ret).to.deep.equal(testOutputs[test].obj);
+  });
+
+  // Test [11-14]
+  it("should return the new fields", function() {
+    let test = 10;
+    let ret = helper.extractFields(testInputs[test].type, testInputs[test].fields);
+    expect(_.intersection(ret, testOutputs[test].fields)).to.deep.equal(ret);
+
+    test = 11;
+    ret = helper.extractFields(testInputs[test].type, testInputs[test].fields);
+    expect(_.intersection(ret, testOutputs[test].fields)).to.deep.equal(ret);
+
+    test = 12;
+    ret = helper.extractFields(testInputs[test].type, testInputs[test].fields);
+    expect(_.intersection(ret, testOutputs[test].fields)).to.deep.equal(ret);
+
+    test = 13;
+    ret = helper.extractFields(testInputs[test].type, testInputs[test].fields);
+    expect(_.intersection(ret, testOutputs[test].fields)).to.deep.equal(ret);
   });
 });
