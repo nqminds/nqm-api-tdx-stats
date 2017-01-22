@@ -113,8 +113,8 @@ const testOutputs = [
   },
   {                       // Test [18]
     count: 50,
-    Friday: [35.808656665113816],
-    Cost: [7301.448916175846],
+    Friday: [35],
+    Cost: [7301],
   },
 ];
 
@@ -538,7 +538,7 @@ describe("first-order-chunk.js", function() {
     });
 
     // Test [18]
-    it.only(`should return the std population for index ${JSON.stringify(testInputs[17].index)}`, function() {
+    it(`should return the std population for index ${JSON.stringify(testInputs[17].index)}`, function() {
       const test = 17;
       const api = new TDXApiStats(config);
 
@@ -554,11 +554,11 @@ describe("first-order-chunk.js", function() {
       };
 
       return api.getStdChunk(datasetId, params)
-          // .then((val) => {
-          //   val.Friday[0] = parseInt(val.Friday[0]);
-          //   val.Cost[0] = parseInt(val.Cost[0]);
-          //   return Promise.resolve(val);
-          // })
+          .then((val) => {
+            val.Friday[0] = parseInt(val.Friday[0]);
+            val.Cost[0] = parseInt(val.Cost[0]);
+            return Promise.resolve(val);
+          })
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });
