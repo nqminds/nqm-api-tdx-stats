@@ -70,5 +70,21 @@ api.getStdSample(datasetID, [], ["field"], 0)
 ```
 ## API
 |Properties|Description|
-|---|---|
-|tdxApi| The nqm-tdx-api object|
+|:---|:---|
+|`tdxApi`| The nqm-tdx-api object|
+
+|Methods (authentication)|Description|
+|:---|:---|
+|`setToken(token)`|Sets the token for the tdxApi object|
+|`setShareKey(keyId, keyPass)`|Sets the shared key for the tdxApi object|
+
+|Methods (first-order)|Description|
+|:---|:---|
+|`getFirstOrder(datasetID, params)`|Returns the first order statistic|
+|`getMin(datasetId, match, fields, timeout)`|Returns the minimum for a set of fields|
+|`getMax(datasetId, match, fields, timeout)`|Returns the maximum for a set of fields|
+|`getSum(datasetId, match, fields, timeout)`|Returns the sum for a set of fields|
+|`getAvg(datasetId, match, fields, timeout)`|Returns the average for a set of fields|
+|`getStdPopulation(datasetId, match, fields, timeout)`|Returns the standard deviation (population) for a set of fields|
+|`getStdSample(datasetId, match, fields, timeout)`|Returns the standard deviation (sample) for a set of fields|
+|`getMed(datasetId, match, fields, timeout)`|Returns the median for a set of fields|
