@@ -68,3 +68,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
     // res = the result of the computation
   });
 ```
+## API
+|Properties|Description|
+|---|---|
+|tdxApi| The nqm-tdx-api object|
