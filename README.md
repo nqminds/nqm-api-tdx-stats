@@ -1,2 +1,3 @@
 # nqm-api-tdx-stats
-NQM Api Tdx Stats
+nquiringminds statistics API interface for nodejs clients
+
