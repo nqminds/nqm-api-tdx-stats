@@ -21,7 +21,7 @@ const api = new TDXApiStats(config);
 
 api.setShareKey(shareKeyID, shareKeySecret);
 
-api.getSum(datasetId, testInputs[test].match, testInputs[test].fields, 10000)
+api.getStdSample(datasetId, testInputs[test].match, testInputs[test].fields, 10000)
     .then((val) => {
       console.log(val);
     });

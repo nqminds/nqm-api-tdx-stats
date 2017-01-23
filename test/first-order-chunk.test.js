@@ -40,6 +40,7 @@ const testInputs = [
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
   {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
 ];
 
 const testOutputs = [
@@ -115,6 +116,11 @@ const testOutputs = [
     count: 50,
     Friday: [35],
     Cost: [7301],
+  },
+  {                       // Test [19]
+    count: 50,
+    Friday: [36],
+    Cost: [7375],
   },
 ];
 
@@ -550,6 +556,31 @@ describe("first-order-chunk.js", function() {
         index: testInputs[test].index,
         chunkSize: testInputs[test].chunkSize,
         distribution: "population",
+        timeout: apiTimeout,
+      };
+
+      return api.getStdChunk(datasetId, params)
+          .then((val) => {
+            val.Friday[0] = parseInt(val.Friday[0]);
+            val.Cost[0] = parseInt(val.Cost[0]);
+            return Promise.resolve(val);
+          })
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [19]
+    it(`should return the std population for index ${JSON.stringify(testInputs[18].index)}`, function() {
+      const test = 18;
+      const api = new TDXApiStats(config);
+
+      api.setShareKey(shareKeyID, shareKeySecret);
+      const params = {
+        type: testInputs[test].type,
+        match: testInputs[test].match,
+        fields: testInputs[test].fields,
+        index: testInputs[test].index,
+        chunkSize: testInputs[test].chunkSize,
+        distribution: "sample",
         timeout: apiTimeout,
       };
 
