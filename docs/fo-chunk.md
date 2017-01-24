@@ -57,7 +57,7 @@ api.getFirstOrderIterator(datasetId, params)
   });
 ```
 
-### getFirstOrderChunk(datasetID, params, cf, init)
+## getFirstOrderChunk(datasetID, params, cf, init)
 Iterates over all chunks and for every iteration executes a calling function.
 
 Input arguments:
@@ -140,3 +140,159 @@ api.getFirstOrderChunk(datasetId, params, cf, init)
     //  }
   });
 ```
+
+## getMinChunk(datasetId, params, cf)
+
+Input arguments:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```params```|```Object```|Parameter object|
+|```cf```|```Function```|Calling function|
+
+Parameter object ```params```:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
+|```index```|```Array```|Array of primary indices string names|
+|```chunkSize```|```Integer```|Number of documents in a chunk|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+
+cf(iterator) - is the calling function with the [Iterator](./iterator.md#iterator-object) object argument. The function is executed before every iteration.
+
+The function returns a Promise with the result:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```count```|```Integer```|Total count of documents for the ```params.match```|
+|```params.fields[0]```|```Array```|Min value for the field ```params.fields[0]```|
+|...|...|...|
+|```params.fields[n-1]```|```Array```|Min value for the field ```params.fields[0]```|
+
+## getMaxChunk(datasetId, params, cf)
+
+Input arguments:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```params```|```Object```|Parameter object|
+|```cf```|```Function```|Calling function|
+
+Parameter object ```params```:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
+|```index```|```Array```|Array of primary indices string names|
+|```chunkSize```|```Integer```|Number of documents in a chunk|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+
+cf(iterator) - is the calling function with the [Iterator](./iterator.md#iterator-object) object argument. The function is executed before every iteration.
+
+The function returns a Promise with the result:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```count```|```Integer```|Total count of documents for the ```params.match```|
+|```params.fields[0]```|```Array```|Max value for the field ```params.fields[0]```|
+|...|...|...|
+|```params.fields[n-1]```|```Array```|Max value for the field ```params.fields[0]```|
+
+## getSumChunk(datasetId, params, cf)
+
+Input arguments:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```params```|```Object```|Parameter object|
+|```cf```|```Function```|Calling function|
+
+Parameter object ```params```:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
+|```index```|```Array```|Array of primary indices string names|
+|```chunkSize```|```Integer```|Number of documents in a chunk|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+
+cf(iterator) - is the calling function with the [Iterator](./iterator.md#iterator-object) object argument. The function is executed before every iteration.
+
+The function returns a Promise with the result:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```count```|```Integer```|Total count of documents for the ```params.match```|
+|```params.fields[0]```|```Array```|Sum value for the field ```params.fields[0]```|
+|...|...|...|
+|```params.fields[n-1]```|```Array```|Sum value for the field ```params.fields[0]```|
+
+## getAvgChunk(datasetId, params, cf)
+
+Input arguments:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```params```|```Object```|Parameter object|
+|```cf```|```Function```|Calling function|
+
+Parameter object ```params```:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
+|```index```|```Array```|Array of primary indices string names|
+|```chunkSize```|```Integer```|Number of documents in a chunk|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+
+cf(iterator) - is the calling function with the [Iterator](./iterator.md#iterator-object) object argument. The function is executed before every iteration.
+
+The function returns a Promise with the result:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```count```|```Integer```|Total count of documents for the ```params.match```|
+|```params.fields[0]```|```Array```|Average value for the field ```params.fields[0]```|
+|...|...|...|
+|```params.fields[n-1]```|```Array```|Average value for the field ```params.fields[0]```|
+
+## getStdChunk(datasetId, params, cf)
+
+Input arguments:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```params```|```Object```|Parameter object|
+|```cf```|```Function```|Calling function|
+
+Parameter object ```params```:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
+|```index```|```Array```|Array of primary indices string names|
+|```chunkSize```|```Integer```|Number of documents in a chunk|
+|```distribution```|```String```|Distributions type ```{"population", "sample"}```|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+
+cf(iterator) - is the calling function with the [Iterator](./iterator.md#iterator-object) object argument. The function is executed before every iteration.
+
+The function returns a Promise with the result:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```count```|```Integer```|Total count of documents for the ```params.match```|
+|```params.fields[0]```|```Array```|Standard deviation value for the field ```params.fields[0]```|
+|...|...|...|
+|```params.fields[n-1]```|```Array```|Standard deviation value for the field ```params.fields[0]```|
