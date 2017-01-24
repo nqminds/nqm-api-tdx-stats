@@ -75,7 +75,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (authentication)|Description|
 |:---|:---|
-|[setToken](https://github.com/nqminds/nqm-api-tdx-stats/#settokentoken)|Sets the token for the tdxApi object|
+|[setToken][1]|Sets the token for the tdxApi object|
 |`setShareKey`|Sets the shared key for the tdxApi object|
 
 |Methods (first-order)|Description|
@@ -99,7 +99,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |`getAvgChunk`|Returns the average for a set of fields using the chunking method|
 |`getStdChunk`|Returns the standard deviation for a set of fields using the chunking method|
 
-### setToken(token)
+### [1] setToken(token)
 Input arguments
 
 |Name|Type|Description|
