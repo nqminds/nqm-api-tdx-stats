@@ -76,7 +76,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |Methods (authentication)|Description|
 |:---|:---|
 |[setToken](./README.md#settokentoken)|Sets the token for the tdxApi object|
-|`setShareKey`|Sets the shared key for the tdxApi object|
+|[setShareKey](./README.md#setsharekeykeyid-keypass)|Sets the shared key for the tdxApi object|
 
 |Methods (first-order)|Description|
 |:---|:---|
@@ -113,6 +113,23 @@ Input arguments
 |:---|:---|:---|
 |keyID|String|Shared key ID|
 |keyPass|String|Shared key password|
+
+### getFirstOrder(datasetID, params)
+Input arguments
+
+|Name|Type|Description|
+|:---|:---|:---|
+|datasetID|String|ID of the tdx dataset|
+|params|Object|Parameter object|
+
+Parameter object
+
+|Name|Type|Description|
+|:---|:---|:---|
+|types|Array|Array of query type objects|
+|match|Object|Query filter object|
+|fields|Array|Array of query field strings|
+|timeout|Integer|Timeout for nqm-tdx-api function call. If 0 timeout is infinite|
 
 
 ### query type
