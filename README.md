@@ -126,7 +126,7 @@ Parameter object
 
 |Name|Type|Description|
 |:---|:---|:---|
-|types|Array|Array of query type objects|
+|[types](./README.md#querytype)|Array|Array of query type objects|
 |match|Object|Query filter object|
 |fields|Array|Array of query field strings|
 |timeout|Integer|Waiting time period for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
