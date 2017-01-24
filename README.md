@@ -46,8 +46,8 @@ const api = new TDXApiStats(config);
 api.setShareKey(tokenID, tokenPass);
 
 api.getStdSample(datasetID, [], ["field"], 0)
-  .then((res) => {
-    // res = the result of the computation
+  .then((result) => {
+    // result = the result of the computation
   });
 ```
 
@@ -64,10 +64,11 @@ const datasetID = "datasetID";
 const api = new TDXApiStats(config);
 
 api.getStdSample(datasetID, [], ["field"], 0)
-  .then((res) => {
-    // res = the result of the computation
+  .then((result) => {
+    // result = the result of the computation
   });
 ```
+
 ## Properties and Methods
 |Properties|Description|
 |:---|:---|
@@ -91,7 +92,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (first-order chunking)|Description|
 |:---|:---|
-|`getFirstOrderIterator`|Returns an iterator object in a promise|
+|[```getFirstOrderIterator```](./README.md#getfirstorderiteratordatasetid-params)|Returns an iterator object|
 |`getFirstOrderChunk`|Returns the first order statistic using the chunking method|
 |`getMinChunk`|Returns the minimum for a set of fields using the chunking method|
 |`getMaxChunk`|Returns the maximum for a set of fields using the chunking method|
@@ -160,7 +161,8 @@ api.getFirstOrder(datasetId, params)
     //  }
   });
 ```
-### getMin(datasetId, match, fields, timeout)
+
+### getMin(datasetID, match, fields, timeout)
 Input arguments:
 
 |Name|Type|Description|
@@ -179,7 +181,7 @@ The function output is a Promise that returns a result object:
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Minimum value for the field ```params.fields[n-1]```|
 
-### getMax(datasetId, match, fields, timeout)
+### getMax(datasetID, match, fields, timeout)
 Input arguments:
 
 |Name|Type|Description|
@@ -198,7 +200,7 @@ The function output is a Promise that returns a result object:
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Maximum value for the field ```params.fields[n-1]```|
 
-### getSum(datasetId, match, fields, timeout)
+### getSum(datasetID, match, fields, timeout)
 Input arguments:
 
 |Name|Type|Description|
@@ -217,7 +219,7 @@ The function output is a Promise that returns a result object:
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Sum value for the field ```params.fields[n-1]```|
 
-### getAvg(datasetId, match, fields, timeout)
+### getAvg(datasetID, match, fields, timeout)
 Input arguments:
 
 |Name|Type|Description|
@@ -236,7 +238,7 @@ The function output is a Promise that returns a result object:
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Average value for the field ```params.fields[n-1]```|
 
-### getStdSample(datasetId, match, fields, timeout)
+### getStdSample(datasetID, match, fields, timeout)
 Input arguments:
 
 |Name|Type|Description|
@@ -255,7 +257,7 @@ The function output is a Promise that returns a result object:
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Standard deviation (sample) value for the field ```params.fields[n-1]```|
 
-### getStdPopulation(datasetId, match, fields, timeout)
+### getStdPopulation(datasetID, match, fields, timeout)
 Input arguments:
 
 |Name|Type|Description|
@@ -274,7 +276,7 @@ The function output is a Promise that returns a result object:
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Standard deviation (population) value for the field ```params.fields[n-1]```|
 
-### getMed(datasetId, match, fields, timeout)
+### getMed(datasetID, match, fields, timeout)
 Input arguments:
 
 |Name|Type|Description|
@@ -293,9 +295,66 @@ The function output is a Promise that returns a result object:
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Median value for the field ```params.fields[n-1]```|
 
+### getFirstOrderIterator(datasetID, params)
+Process the dataset in chunks and outputs each value of the chunk in an [Iterator](./README.md#Iteratorobject) object.
+
+Input arguments:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```params```|```Object```|Parameter object|
+
+Parameter object ```params```:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```type```|```Array```|Array of [query type](./README.md#querytype) objects|
+|```match```|```Object```|[Query match](./README.md#querymatch) object|
+|```fields```|```Array```|Array of [query field](./README.md#queryfield) strings|
+|```index```|```Array```|Array of primary indices string names|
+|```chunkSize```|```Integer```|Number of documents in a chunk|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+
+The function output is a Promise that returns an [Iterator](./README.md#Iteratorobject) object.
+
+Example:
+```js
+const datasetID = "12345";
+const params ={
+  type: [{"$min": "$$"}, {"$max": "$$"}],
+  match: {"BayType": "Electric"},
+  fields: ["BayCount", "LotCode"],
+  index: ["ID", "NID"],
+  chunkSize: 200000,
+  timeout: 1000,
+};
+
+let iter;
+
+api.getFirstOrderIterator(datasetId, params)
+  .then((iterator) => {
+    iter = iterator;
+    return iterator.next();
+  })
+  .then((result) => {
+    // Do something with the chunk result
+    return iter.next();
+  })
+  .then((result) => {
+    // result:
+    // {
+    //    count: 223432,
+    //    BayCount: [3, 12],
+    //    LotCode: [1, 1234],
+    //  }
+  });
+```
+
 ### query type
 
 ### query match
 
 ### query field
 
+### Iterator object
