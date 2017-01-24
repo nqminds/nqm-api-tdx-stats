@@ -93,7 +93,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |Methods (first-order chunking)|Description|
 |:---|:---|
 |[```getFirstOrderIterator```](./README.md#getfirstorderiteratordatasetid-params)|Returns an iterator object|
-|`getFirstOrderChunk`|Returns the first order statistic using the chunking method|
+|[```getFirstOrderChunk```](./README.md#getfirstorderchunkdatasetid-params-cf-init)|Returns the first order statistic using the chunking method|
 |`getMinChunk`|Returns the minimum for a set of fields using the chunking method|
 |`getMaxChunk`|Returns the maximum for a set of fields using the chunking method|
 |`getSumChunk`|Returns the sum for a set of fields using the chunking method|
