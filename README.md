@@ -81,14 +81,14 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (first-order)|Description|
 |:---|:---|
-|[```getFirstOrder```](./docs/params.md#getfirstorderdatasetid-params)|Returns the first order statistic|
-|[```getMin```](./docs/params.md#getmindatasetid-match-fields-timeout)|Returns the minimum for a set of fields|
-|[```getMax```](./docs/params.md#getmaxdatasetid-match-fields-timeout)|Returns the maximum for a set of fields|
-|[```getSum```](./docs/params.md#getsumdatasetid-match-fields-timeout)|Returns the sum for a set of fields|
-|[```getAvg```](./docs/params.md#getavgdatasetid-match-fields-timeout)|Returns the average for a set of fields|
-|[```getStdPopulation```](./docs/params.md#getstdpopulationdatasetid-match-fields-timeout)|Returns the standard deviation (population) for a set of fields|
-|[```getStdSample```](./docs/params.md#getstdsampledatasetid-match-fields-timeout)|Returns the standard deviation (sample) for a set of fields|
-|[```getMed```](./docs/params.md#getmeddatasetid-match-fields-timeout)|Returns the median for a set of fields|
+|[```getFirstOrder```](./docs/fo.md#getfirstorderdatasetid-params)|Returns the first order statistic|
+|[```getMin```](./docs/fo.md#getmindatasetid-match-fields-timeout)|Returns the minimum for a set of fields|
+|[```getMax```](./docs/fo.md#getmaxdatasetid-match-fields-timeout)|Returns the maximum for a set of fields|
+|[```getSum```](./docs/fo.md#getsumdatasetid-match-fields-timeout)|Returns the sum for a set of fields|
+|[```getAvg```](./docs/fo.md#getavgdatasetid-match-fields-timeout)|Returns the average for a set of fields|
+|[```getStdPopulation```](./docs/fo.md#getstdpopulationdatasetid-match-fields-timeout)|Returns the standard deviation (population) for a set of fields|
+|[```getStdSample```](./docs/fo.md#getstdsampledatasetid-match-fields-timeout)|Returns the standard deviation (sample) for a set of fields|
+|[```getMed```](./docs/fo.md#getmeddatasetid-match-fields-timeout)|Returns the median for a set of fields|
 
 |Methods (first-order chunking)|Description|
 |:---|:---|
