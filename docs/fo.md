@@ -12,9 +12,9 @@ Parameter object ```params```:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|```type```|```Array```|Array of [query type](./docs/params.md#querytype) objects|
-|```match```|```Object```|[Query match](./docs/params.md#querymatch) object|
-|```fields```|```Array```|Array of [query field](./docs/params.md#queryfield) strings|
+|```type```|```Array```|Array of [query type](./docs/params.md#query-type) objects|
+|```match```|```Object```|[Query match](./docs/params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./docs/params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
