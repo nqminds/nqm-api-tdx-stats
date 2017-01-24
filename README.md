@@ -71,7 +71,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 ## API
 |Properties|Description|
 |:---|:---|
-|[tdxApi](https://github.com/nqminds/nqm-api-tdx)| The nqm-tdx-api object|
+|[```tdxApi```](https://github.com/nqminds/nqm-api-tdx)| The nqm-tdx-api object|
 
 |Methods (authentication)|Description|
 |:---|:---|
