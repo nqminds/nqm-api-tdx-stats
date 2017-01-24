@@ -242,12 +242,6 @@ api.getFirstOrderChunk(datasetId, params, cf, init)
   });
 ```
 
-### query type
-
-### query match
-
-### query field
-
 ### Iterator object
 
 Methods:
