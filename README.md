@@ -296,7 +296,7 @@ The function output is a Promise that returns a result object:
 |```params.fields[n-1]```|```Array```|Median value for the field ```params.fields[n-1]```|
 
 ### getFirstOrderIterator(datasetID, params)
-Process the dataset in chunks and outputs each value of the chunk in an [Iterator](./README.md#Iterator-object) object. The function requires the list of primary indices to iterate over.
+Process the dataset in chunks and outputs each value of the chunk in an [Iterator](./README.md#iterator-object) object. The function requires the list of primary indices to iterate over.
 
 Input arguments:
 
@@ -316,7 +316,7 @@ Parameter object ```params```:
 |```chunkSize```|```Integer```|Number of documents in a chunk|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
-The function output is a Promise that returns an [Iterator](./README.md#Iterator-object) object.
+The function output is a Promise that returns an [Iterator](./README.md#iterator-object) object.
 
 Example:
 ```js
