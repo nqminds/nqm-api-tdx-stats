@@ -160,6 +160,24 @@ api.getFirstOrder(datasetId, params)
     //  }
   });
 ```
+### getMin(datasetId, match, fields, timeout)
+Input arguments:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```match```|```Object```|[Query match](./README.md#querymatch) object|
+|```fields```|```Array```|Array of [query field](./README.md#queryfield) strings|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+
+The function output is a Promise that returns a result object:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```count```|```Integer```|Total count of documents matching ```params.match```|
+|```params.fields[0]```|```Array```|Minimum value for the field ```params.fields[0]```|
+|...|...|...|
+|```params.fields[n-1]```|```Array```|Minimum value for the field ```params.fields[n-1]```|
 
 ### query type
 
