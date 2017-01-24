@@ -104,41 +104,41 @@ Input arguments:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|token|String|Authentication token|
+|```token```|```String```|Authentication token|
 
 ### setShareKey(keyID, keyPass)
 Input arguments:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|keyID|String|Shared key ID|
-|keyPass|String|Shared key password|
+|```keyID```|```String```|Shared key ID|
+|```keyPass```|```String```|Shared key password|
 
 ### getFirstOrder(datasetID, params)
 Input arguments:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|datasetID|String|ID of the tdx dataset|
-|params|Object|Parameter object|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```params```|```Object```|Parameter object|
 
-Parameter object params:
+Parameter object ```params```:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|types|Array|Array of [query type](./README.md#querytype) objects|
-|match|Object|[Query match](./README.md#querymatch) object|
-|fields|Array|Array of query field strings|
-|timeout|Integer|Waiting time period for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+|```types```|```Array```|Array of [query type](./README.md#querytype) objects|
+|```match```|```Object```|[Query match](./README.md#querymatch) object|
+|```fields```|```Array```|Array of query field strings|
+|```timeout```|```Integer```|Waiting time period for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|count|Integer|Total count of documents matching params.match|
-|params.fields[0]|Array|Array of first-order statistics, one for each query type|
+|```count```|```Integer```|Total count of documents matching ```params.match```|
+|```params.fields[0]```|```Array```|Array of first-order statistics, one for each query type|
 |...|...|...|
-|params.fields[n-1]|Array|Array of first-order statistics, one for each query type|
+|```params.fields[n-1]```|```Array```|Array of first-order statistics, one for each query type|
 
 ### query type
 
