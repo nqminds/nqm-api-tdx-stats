@@ -129,7 +129,7 @@ Parameter object
 |types|Array|Array of query type objects|
 |match|Object|Query filter object|
 |fields|Array|Array of query field strings|
-|timeout|Integer|Timeout for nqm-tdx-api function call. If 0 timeout is infinite|
+|timeout|Integer|Waiting time period for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 
 ### query type
