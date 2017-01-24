@@ -339,6 +339,8 @@ api.getFirstOrderIterator(datasetId, params)
   })
   .then((result) => {
     // Do something with the chunk result
+    // const iterationNumber = iter.getInternalParam("iterationNumber");
+    // const totalIterations = iter.getInternalParam("totalIterations");
     return iter.next();
   })
   .then((result) => {
