@@ -1,5 +1,5 @@
 # nqm-api-tdx-stats
-nquiringminds statistics API interface for nodejs clients
+nquiringminds statistics API interface for nodejs clients (requires mongoDB >= 3.2)
 
 ## Install
 ```cmd
