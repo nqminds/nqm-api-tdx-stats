@@ -100,14 +100,14 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |`getStdChunk`|Returns the standard deviation for a set of fields using the chunking method|
 
 ### setToken(token)
-Input arguments
+Input arguments:
 
 |Name|Type|Description|
 |:---|:---|:---|
 |token|String|Authentication token|
 
 ### setShareKey(keyID, keyPass)
-Input arguments
+Input arguments:
 
 |Name|Type|Description|
 |:---|:---|:---|
@@ -115,22 +115,34 @@ Input arguments
 |keyPass|String|Shared key password|
 
 ### getFirstOrder(datasetID, params)
-Input arguments
+Input arguments:
 
 |Name|Type|Description|
 |:---|:---|:---|
 |datasetID|String|ID of the tdx dataset|
 |params|Object|Parameter object|
 
-Parameter object
+Parameter object params:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|[types](./README.md#querytype)|Array|Array of query type objects|
-|match|Object|Query filter object|
+|types|Array|Array of [query type](./README.md#querytype) objects|
+|match|Object|[Query match](./README.md#querymatch) object|
 |fields|Array|Array of query field strings|
 |timeout|Integer|Waiting time period for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
+The function output is a Promise that returns a result object:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|count|Integer|Total count of documents matching params.match|
+|params.fields[0]|Array|Array of first-order statistics, one for each query type|
+|...|...|...|
+|params.fields[n-1]|Array|Array of first-order statistics, one for each query type|
 
 ### query type
+
+### query match
+
+### query field
 
