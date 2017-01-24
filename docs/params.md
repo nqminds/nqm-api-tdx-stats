@@ -10,7 +10,9 @@ The ```$op``` key is a:
 
 2) [Arithmetic aggregation operator](https://docs.mongodb.com/manual/reference/operator/aggregation-arithmetic). 
 
-The ```<expression>``` value is any valid query type expression. The expression contains the parameter ```$$``` that denotes the dataset field on which the expression is to be applied.
+The ```<expression>``` value is any valid query type expression.
+
+The expression contains the parameter ```$$``` that denotes the dataset field on which the expression is to be applied.
 
 Example:
 ```js
