@@ -1,4 +1,4 @@
-# nqm-api-tdx-stats
+# nqm-api-tdx-stats [![NPM version](https://badge.fury.io/js/nqm-api-tdx-stats.svg)](https://badge.fury.io/js/nqm-api-tdx-stats.svg)
 nquiringminds statistics API interface for nodejs clients (requires mongoDB >= 3.2)
 
 ## Install
