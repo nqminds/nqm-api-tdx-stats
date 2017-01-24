@@ -81,13 +81,13 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |Methods (first-order)|Description|
 |:---|:---|
 |[getFirstOrder](./README.md#getfirstorderdatasetid-params)|Returns the first order statistic|
-|`getMin`|Returns the minimum for a set of fields|
-|`getMax`|Returns the maximum for a set of fields|
-|`getSum`|Returns the sum for a set of fields|
-|`getAvg`|Returns the average for a set of fields|
-|`getStdPopulation`|Returns the standard deviation (population) for a set of fields|
-|`getStdSample`|Returns the standard deviation (sample) for a set of fields|
-|`getMed`|Returns the median for a set of fields|
+|[getMin](./README.md#getmindatasetid-match-fields-timeout)|Returns the minimum for a set of fields|
+|[getMax](./README.md#getmaxdatasetid-match-fields-timeout)|Returns the maximum for a set of fields|
+|[getSum](./README.md#getsumdatasetid-match-fields-timeout)|Returns the sum for a set of fields|
+|[getAvg](./README.md#getavgdatasetid-match-fields-timeout)|Returns the average for a set of fields|
+|[getStdPopulation](./README.md#getstdpopulationdatasetid-match-fields-timeout)|Returns the standard deviation (population) for a set of fields|
+|[getStdSample](./README.md#getstdsampledatasetid-match-fields-timeout)|Returns the standard deviation (sample) for a set of fields|
+|[getMed](./README.md#getmeddatasetid-match-fields-timeout)|Returns the median for a set of fields|
 
 |Methods (first-order chunking)|Description|
 |:---|:---|
@@ -273,6 +273,25 @@ The function output is a Promise that returns a result object:
 |```params.fields[0]```|```Array```|Standard deviation (population) value for the field ```params.fields[0]```|
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Standard deviation (population) value for the field ```params.fields[n-1]```|
+
+### getMed(datasetId, match, fields, timeout)
+Input arguments:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```datasetID```|```String```|ID of the tdx dataset|
+|```match```|```Object```|[Query match](./README.md#querymatch) object|
+|```fields```|```Array```|Array of [query field](./README.md#queryfield) strings|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+
+The function output is a Promise that returns a result object:
+
+|Name|Type|Description|
+|:---|:---|:---|
+|```count```|```Integer```|Total count of documents matching ```params.match```|
+|```params.fields[0]```|```Array```|Median value for the field ```params.fields[0]```|
+|...|...|...|
+|```params.fields[n-1]```|```Array```|Median value for the field ```params.fields[n-1]```|
 
 ### query type
 
