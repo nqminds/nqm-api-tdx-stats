@@ -30,5 +30,27 @@ type = [{"$min": {"$add":["$$", "$bias"]}}]
 ```
 
 ## query match
+The query match is an object of the type:
+```
+{ $op: <expression> }
+```
+
+The ```$op``` key is a [query and projection operator](https://docs.mongodb.com/manual/reference/operator/query/).
+
+The ```<expression>``` value is any valid query match expression.
+
+Examples:
+
+```js
+
+// Match all documents with ID = 24
+let match = {"ID": {"$eq": 24}};
+
+// Match all documents with ID > 24
+match = {"ID": {"$ge": 24}};
+
+// Match all documents with ID > 24 and Name = "Stat"
+match = {"$and": [{"ID": {"$eq": 24}}, {"Name": {"$eq": "Stat"}}]}
+```
 
 ## query field
