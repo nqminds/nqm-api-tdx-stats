@@ -75,7 +75,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (authentication)|Description|
 |:---|:---|
-|[setToken](readme.md/#settoketoken)|Sets the token for the tdxApi object|
+|[setToken](./README.MD#settoketoken)|Sets the token for the tdxApi object|
 |`setShareKey`|Sets the shared key for the tdxApi object|
 
 |Methods (first-order)|Description|
