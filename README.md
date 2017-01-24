@@ -75,16 +75,26 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (authentication)|Description|
 |:---|:---|
-|`setToken(token)`|Sets the token for the tdxApi object|
-|`setShareKey(keyId, keyPass)`|Sets the shared key for the tdxApi object|
+|`setToken`|Sets the token for the tdxApi object|
+|`setShareKey`|Sets the shared key for the tdxApi object|
 
 |Methods (first-order)|Description|
 |:---|:---|
-|`getFirstOrder(datasetID, params)`|Returns the first order statistic|
-|`getMin(datasetId, match, fields, timeout)`|Returns the minimum for a set of fields|
-|`getMax(datasetId, match, fields, timeout)`|Returns the maximum for a set of fields|
-|`getSum(datasetId, match, fields, timeout)`|Returns the sum for a set of fields|
-|`getAvg(datasetId, match, fields, timeout)`|Returns the average for a set of fields|
-|`getStdPopulation(datasetId, match, fields, timeout)`|Returns the standard deviation (population) for a set of fields|
-|`getStdSample(datasetId, match, fields, timeout)`|Returns the standard deviation (sample) for a set of fields|
-|`getMed(datasetId, match, fields, timeout)`|Returns the median for a set of fields|
+|`getFirstOrder`|Returns the first order statistic|
+|`getMin`|Returns the minimum for a set of fields|
+|`getMax`|Returns the maximum for a set of fields|
+|`getSum`|Returns the sum for a set of fields|
+|`getAvg`|Returns the average for a set of fields|
+|`getStdPopulation`|Returns the standard deviation (population) for a set of fields|
+|`getStdSample`|Returns the standard deviation (sample) for a set of fields|
+|`getMed`|Returns the median for a set of fields|
+
+|Methods (first-order chunking)|Description|
+|:---|:---|
+|`getFirstOrderIterator`|Returns an iterator object in a promise|
+|`getFirstOrderChunk`|Returns the first order statistic using the chunking method|
+|`getMinChunk`|Returns the minimum for a set of fields using the chunking method|
+|`getMaxChunk`|Returns the maximum for a set of fields using the chunking method|
+|`getSumChunk`|Returns the sum for a set of fields using the chunking method|
+|`getAvgChunk`|Returns the average for a set of fields using the chunking method|
+|`getStdChunk`|Returns the standard deviation for a set of fields using the chunking method|
