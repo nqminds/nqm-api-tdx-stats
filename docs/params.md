@@ -10,7 +10,22 @@ The ```$op``` key is a:
 
 2) [Arithmetic aggregation operator](https://docs.mongodb.com/manual/reference/operator/aggregation-arithmetic). 
 
-The ```<expression>``` value is any valid query type expression.
+The ```<expression>``` value is any valid query type expression. The expression contains the parameter ```$$``` that denotes the dataset field on which the expression is to be applied.
+
+Example:
+```js
+let field = ["temperature"];
+
+// The min for the field temperature
+let type = [{"$min": "$$"}];
+
+// The min of the square root of the temperature
+type = [{"$min": {"$pow":["$$", 2]}}]
+
+// The min of the sum between the field temperature and the field bias
+type = [{"$min": {"$add":["$$", "$bias"]}}]
+
+```
 
 ## query match
 
