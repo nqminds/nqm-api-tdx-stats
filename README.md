@@ -75,19 +75,19 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (authentication)|Description|
 |:---|:---|
-|[setToken](./README.md#settokentoken)|Sets the token for the tdxApi object|
-|[setShareKey](./README.md#setsharekeykeyid-keypass)|Sets the shared key for the tdxApi object|
+|[```setToken```](./README.md#settokentoken)|Sets the token for the tdxApi object|
+|[```setShareKey```](./README.md#setsharekeykeyid-keypass)|Sets the shared key for the tdxApi object|
 
 |Methods (first-order)|Description|
 |:---|:---|
-|[getFirstOrder](./README.md#getfirstorderdatasetid-params)|Returns the first order statistic|
-|[getMin](./README.md#getmindatasetid-match-fields-timeout)|Returns the minimum for a set of fields|
-|[getMax](./README.md#getmaxdatasetid-match-fields-timeout)|Returns the maximum for a set of fields|
-|[getSum](./README.md#getsumdatasetid-match-fields-timeout)|Returns the sum for a set of fields|
-|[getAvg](./README.md#getavgdatasetid-match-fields-timeout)|Returns the average for a set of fields|
-|[getStdPopulation](./README.md#getstdpopulationdatasetid-match-fields-timeout)|Returns the standard deviation (population) for a set of fields|
-|[getStdSample](./README.md#getstdsampledatasetid-match-fields-timeout)|Returns the standard deviation (sample) for a set of fields|
-|[getMed](./README.md#getmeddatasetid-match-fields-timeout)|Returns the median for a set of fields|
+|[```getFirstOrder```](./README.md#getfirstorderdatasetid-params)|Returns the first order statistic|
+|[```getMin```](./README.md#getmindatasetid-match-fields-timeout)|Returns the minimum for a set of fields|
+|[```getMax```](./README.md#getmaxdatasetid-match-fields-timeout)|Returns the maximum for a set of fields|
+|[```getSum```](./README.md#getsumdatasetid-match-fields-timeout)|Returns the sum for a set of fields|
+|[```getAvg```](./README.md#getavgdatasetid-match-fields-timeout)|Returns the average for a set of fields|
+|[```getStdPopulation```](./README.md#getstdpopulationdatasetid-match-fields-timeout)|Returns the standard deviation (population) for a set of fields|
+|[```getStdSample```](./README.md#getstdsampledatasetid-match-fields-timeout)|Returns the standard deviation (sample) for a set of fields|
+|[```getMed```](./README.md#getmeddatasetid-match-fields-timeout)|Returns the median for a set of fields|
 
 |Methods (first-order chunking)|Description|
 |:---|:---|
