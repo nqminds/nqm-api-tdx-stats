@@ -47,10 +47,12 @@ Examples:
 let match = {"ID": {"$eq": 24}};
 
 // Match all documents with ID > 24
-match = {"ID": {"$ge": 24}};
+match = {"ID": {"$gt": 24}};
 
 // Match all documents with ID > 24 and Name = "Stat"
-match = {"$and": [{"ID": {"$eq": 24}}, {"Name": {"$eq": "Stat"}}]}
+match = {"$and": [{"ID": {"$gt": 24}}, {"Name": {"$eq": "Stat"}}]}
 ```
 
 ## query field
+The query field is a dataset field name (```String```) on the computation is to be performed.
+
