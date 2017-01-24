@@ -54,5 +54,5 @@ match = {"$and": [{"ID": {"$gt": 24}}, {"Name": {"$eq": "Stat"}}]}
 ```
 
 ## query field
-The query field is a dataset field name (```String```) on the computation is to be performed.
+The query field is a dataset field name (```String```) on which the computation is to be performed.
 
