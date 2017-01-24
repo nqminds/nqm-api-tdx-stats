@@ -99,7 +99,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |`getAvgChunk`|Returns the average for a set of fields using the chunking method|
 |`getStdChunk`|Returns the standard deviation for a set of fields using the chunking method|
 
-### [1] setToken(token)
+### setToken(token)
 Input arguments
 
 |Name|Type|Description|
