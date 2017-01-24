@@ -80,7 +80,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (first-order)|Description|
 |:---|:---|
-|`getFirstOrder`|Returns the first order statistic|
+|[getFirstOrder](./README.md#getfirstorderdatasetid-params)|Returns the first order statistic|
 |`getMin`|Returns the minimum for a set of fields|
 |`getMax`|Returns the maximum for a set of fields|
 |`getSum`|Returns the sum for a set of fields|
@@ -126,10 +126,10 @@ Parameter object ```params```:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|```types```|```Array```|Array of [query type](./README.md#querytype) objects|
+|```type```|```Array```|Array of [query type](./README.md#querytype) objects|
 |```match```|```Object```|[Query match](./README.md#querymatch) object|
 |```fields```|```Array```|Array of query field strings|
-|```timeout```|```Integer```|Waiting time period for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
+|```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
 
@@ -139,6 +139,27 @@ The function output is a Promise that returns a result object:
 |```params.fields[0]```|```Array```|Array of first-order statistics, one for each query type|
 |...|...|...|
 |```params.fields[n-1]```|```Array```|Array of first-order statistics, one for each query type|
+
+Example:
+```js
+const datasetID = "12345";
+const params ={
+  type: [{"$min": "$$"}, {"$max": "$$"}],
+  match: {"BayType": "Electric"},
+  fields: ["BayCount", "LotCode"],
+  timeout: 1000,
+};
+
+api.getFirstOrder(datasetId, params)
+  .then((result) => {
+    // result:
+    // {
+    //    count: 223432,
+    //    BayCount: [3, 12],
+    //    LotCode: [1, 1234],
+    //  }
+  });
+```
 
 ### query type
 
