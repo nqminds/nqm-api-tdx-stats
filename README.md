@@ -94,8 +94,8 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |:---|:---|
 |[```getFirstOrderIterator```](./docs/fo-chunk.md#getfirstorderiteratordatasetid-params)|Returns an iterator object|
 |[```getFirstOrderChunk```](./docs/fo-chunk.md#getfirstorderchunkdatasetid-params-cf-init)|Returns the first order statistic using the chunking method|
-|`getMinChunk`|Returns the minimum for a set of fields using the chunking method|
-|`getMaxChunk`|Returns the maximum for a set of fields using the chunking method|
-|`getSumChunk`|Returns the sum for a set of fields using the chunking method|
-|`getAvgChunk`|Returns the average for a set of fields using the chunking method|
-|`getStdChunk`|Returns the standard deviation for a set of fields using the chunking method|
+|[```getMinChunk```](./docs/fo-chunk.md#getminchunkdatasetid-params-cf)|Returns the minimum for a set of fields using the chunking method|
+|[```getMaxChunk```](./docs/fo-chunk.md#getmaxchunkdatasetid-params-cf)|Returns the maximum for a set of fields using the chunking method|
+|[```getSumChunk```](./docs/fo-chunk.md#getsumchunkdatasetid-params-cf)|Returns the sum for a set of fields using the chunking method|
+|[```getAvgChunk```](./docs/fo-chunk.md#getavgchunkdatasetid-params-cf)|Returns the average for a set of fields using the chunking method|
+|[```getStdChunk```](./docs/fo-chunk.md#getstdchunkdatasetid-params-cf)|Returns the standard deviation for a set of fields using the chunking method|
