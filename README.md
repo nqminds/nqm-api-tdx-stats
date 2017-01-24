@@ -360,16 +360,19 @@ api.getFirstOrderIterator(datasetId, params)
 ### Iterator object
 
 Methods:
+
 |Function name|Description|
 |:---|:---|
 |```next```|Returns the current chunk result|
 |```getInternalParam```|Returns the value of a chunk parameter|
 
 next():
+
 Returns a Promise with the current chunk result.
 
 getInternalParam(key):
-Return the chunk value for the ```key```:
+
+Returns the chunk value for the ```key```.
 
 |Key name|Description|
 |:---|:---|
