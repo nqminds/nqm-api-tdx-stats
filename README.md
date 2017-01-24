@@ -366,7 +366,9 @@ Methods:
 |```next```|Returns the current chunk result|
 |```getInternalParam```|Returns the value of a chunk parameter|
 
-next():
+```
+next()
+```
 
 Returns a Promise with the current chunk result.
 
