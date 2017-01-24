@@ -53,8 +53,8 @@ Input arguments:
 |Name|Type|Description|
 |:---|:---|:---|
 |```datasetID```|```String```|ID of the tdx dataset|
-|```match```|```Object```|[Query match](./docs/params.md#querymatch) object|
-|```fields```|```Array```|Array of [query field](./docs/params.md#queryfield) strings|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
@@ -72,8 +72,8 @@ Input arguments:
 |Name|Type|Description|
 |:---|:---|:---|
 |```datasetID```|```String```|ID of the tdx dataset|
-|```match```|```Object```|[Query match](./docs/params.md#querymatch) object|
-|```fields```|```Array```|Array of [query field](./docs/params.md#queryfield) strings|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
@@ -91,8 +91,8 @@ Input arguments:
 |Name|Type|Description|
 |:---|:---|:---|
 |```datasetID```|```String```|ID of the tdx dataset|
-|```match```|```Object```|[Query match](./docs/params.md#querymatch) object|
-|```fields```|```Array```|Array of [query field](./docs/params.md#queryfield) strings|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
@@ -110,8 +110,8 @@ Input arguments:
 |Name|Type|Description|
 |:---|:---|:---|
 |```datasetID```|```String```|ID of the tdx dataset|
-|```match```|```Object```|[Query match](./docs/params.md#querymatch) object|
-|```fields```|```Array```|Array of [query field](./docs/params.md#queryfield) strings|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
@@ -129,8 +129,8 @@ Input arguments:
 |Name|Type|Description|
 |:---|:---|:---|
 |```datasetID```|```String```|ID of the tdx dataset|
-|```match```|```Object```|[Query match](./docs/params.md#querymatch) object|
-|```fields```|```Array```|Array of [query field](./docs/params.md#queryfield) strings|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
@@ -148,8 +148,8 @@ Input arguments:
 |Name|Type|Description|
 |:---|:---|:---|
 |```datasetID```|```String```|ID of the tdx dataset|
-|```match```|```Object```|[Query match](./docs/params.md#querymatch) object|
-|```fields```|```Array```|Array of [query field](./docs/params.md#queryfield) strings|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
@@ -167,8 +167,8 @@ Input arguments:
 |Name|Type|Description|
 |:---|:---|:---|
 |```datasetID```|```String```|ID of the tdx dataset|
-|```match```|```Object```|[Query match](./docs/params.md#querymatch) object|
-|```fields```|```Array```|Array of [query field](./docs/params.md#queryfield) strings|
+|```match```|```Object```|[Query match](./params.md#query-match) object|
+|```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
 The function output is a Promise that returns a result object:
