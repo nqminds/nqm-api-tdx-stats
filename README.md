@@ -76,8 +76,8 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (authentication)|Description|
 |:---|:---|
-|[```setToken```](./README.md#settokentoken)|Sets the token for the tdxApi object|
-|[```setShareKey```](./README.md#setsharekeykeyid-keypass)|Sets the shared key for the tdxApi object|
+|[```setToken```](./docs/authentication.md#settokentoken)|Sets the token for the tdxApi object|
+|[```setShareKey```](./docs/authentication.md#setsharekeykeyid-keypass)|Sets the shared key for the tdxApi object|
 
 |Methods (first-order)|Description|
 |:---|:---|
@@ -99,21 +99,6 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |`getSumChunk`|Returns the sum for a set of fields using the chunking method|
 |`getAvgChunk`|Returns the average for a set of fields using the chunking method|
 |`getStdChunk`|Returns the standard deviation for a set of fields using the chunking method|
-
-### setToken(token)
-Input arguments:
-
-|Name|Type|Description|
-|:---|:---|:---|
-|```token```|```String```|Authentication token|
-
-### setShareKey(keyID, keyPass)
-Input arguments:
-
-|Name|Type|Description|
-|:---|:---|:---|
-|```keyID```|```String```|Shared key ID|
-|```keyPass```|```String```|Shared key password|
 
 ### getFirstOrder(datasetID, params)
 Input arguments:
