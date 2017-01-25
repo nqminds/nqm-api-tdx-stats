@@ -47,7 +47,7 @@ const testInputs = [
       low: [],
       upp: [],
     },
-  }, // Test [2]
+  }, // Test [3]
   {
     match: {},
     field: "",
@@ -56,25 +56,45 @@ const testInputs = [
       low: [1],
       upp: [20],
     },
-  }, // Test [3]
+  }, // Test [4]
 ];
 
 const testOutputs = [
   {
     count: 21,
     bins: [10, 10],
+    binIndex: {
+      type: "number",
+      low: [1, 10],
+      upp: [10, 20],
+    },
   }, // Test [1]
   {
     count: 21,
     bins: [20],
+    binIndex: {
+      type: "number",
+      low: [1],
+      upp: [20],
+    },
   }, // Test [2]
   {
     count: 21,
     bins: [],
+    binIndex: {
+      type: "number",
+      low: [],
+      upp: [],
+    },
   }, // Test [3]
   {
     count: 21,
     bins: [],
+    binIndex: {
+      type: "number",
+      low: [1],
+      upp: [20],
+    },
   }, // Test [4]
 ];
 
