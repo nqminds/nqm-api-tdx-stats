@@ -66,6 +66,15 @@ const testInputs = [
       upp: [10, 20],
     },
   }, // Test [5]
+  {
+    match: {},
+    field: "LotCode",
+    binIndex: {
+      type: "number",
+      low: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      upp: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    },
+  }, // Test [6]
 ];
 
 const testOutputs = [
@@ -114,6 +123,15 @@ const testOutputs = [
       upp: [10, 20],
     },
   }, // Test [5]
+  {
+    count: 21,
+    bins: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
+    binIndex: {
+      type: "number",
+      low: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      upp: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+    },
+  }, // Test [6]
 ];
 
 const testTimeout = 20000;
@@ -200,6 +218,25 @@ describe.only("second-order.js", function() {
 
   it(`should return the histogram for binIndex ${JSON.stringify(testInputs[4].binIndex)}`, function() {
     const test = 4;
+
+    const api = new TDXApiStats(configNqm);
+    api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+    const params = {
+      match: testInputs[test].match,
+      field: testInputs[test].field,
+      binIndex: testInputs[test].binIndex,
+      index: [],
+      limit: 0,
+      timeout: apiTimeout,
+    };
+
+    return api.getBasicBins(datasetIdNqm, params)
+        .should.eventually.deep.equal(testOutputs[test]);
+  });
+
+  it(`should return the histogram for binIndex ${JSON.stringify(testInputs[5].binIndex)}`, function() {
+    const test = 5;
 
     const api = new TDXApiStats(configNqm);
     api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
