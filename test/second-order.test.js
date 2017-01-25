@@ -57,6 +57,15 @@ const testInputs = [
       upp: [20],
     },
   }, // Test [4]
+  {
+    match: {"BayType": "Mobility bays"},
+    field: "BayCount",
+    binIndex: {
+      type: "number",
+      low: [1, 10],
+      upp: [10, 20],
+    },
+  }, // Test [5]
 ];
 
 const testOutputs = [
@@ -96,6 +105,15 @@ const testOutputs = [
       upp: [20],
     },
   }, // Test [4]
+  {
+    count: 3,
+    bins: [3, 0],
+    binIndex: {
+      type: "number",
+      low: [1, 10],
+      upp: [10, 20],
+    },
+  }, // Test [5]
 ];
 
 const testTimeout = 20000;
@@ -178,5 +196,24 @@ describe.only("second-order.js", function() {
 
     return api.getBasicBins(datasetIdNqm, params)
         .should.eventually.deep.equal(testOutputs[test]);
-  });  
+  });
+
+  it(`should return the histogram for binIndex ${JSON.stringify(testInputs[4].binIndex)}`, function() {
+    const test = 4;
+
+    const api = new TDXApiStats(configNqm);
+    api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+    const params = {
+      match: testInputs[test].match,
+      field: testInputs[test].field,
+      binIndex: testInputs[test].binIndex,
+      index: [],
+      limit: 0,
+      timeout: apiTimeout,
+    };
+
+    return api.getBasicBins(datasetIdNqm, params)
+        .should.eventually.deep.equal(testOutputs[test]);
+  });
 });
