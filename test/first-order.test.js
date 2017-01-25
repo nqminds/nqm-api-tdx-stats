@@ -2,7 +2,6 @@
 
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
-const Promise = require("bluebird");
 
 chai.use(chaiAsPromised);
 chai.should();
