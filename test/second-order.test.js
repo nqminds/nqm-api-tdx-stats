@@ -75,6 +75,16 @@ const testInputs = [
       upp: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     },
   }, // Test [6]
+  {
+    match: {},
+    field: "BayCount",
+    binIndex: {
+      type: "number",
+      count: 2,
+      low: [],
+      upp: [],
+    },
+  }, // Test [7]
 ];
 
 const testOutputs = [
@@ -132,6 +142,15 @@ const testOutputs = [
       upp: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     },
   }, // Test [6]
+  {
+    count: 21,
+    bins: [10, 11],
+    binIndex: {
+      type: "number",
+      low: [1, 10],
+      upp: [10, 20],
+    },
+  }, // Test [7]
 ];
 
 const testTimeout = 20000;
