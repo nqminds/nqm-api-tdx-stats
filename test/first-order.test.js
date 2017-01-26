@@ -29,23 +29,23 @@ const shareKeySecretNqm = "root";
 const datasetIdNqm = "Sygy_xBhml";
 
 const testInputs = [
-  {type: [{"$min": "$$"}], fields: ["ecode"]},                                                  // Test [1]
-  {type: [{"$min": "$$"}], fields: ["ecode", "rate"]},                                          // Test [2]
-  {type: [{"$min": "$$"}], match: {"name": "Surrey"}, fields: ["ecode", "rate"]},               // Test [3]
-  {type: [{"$min": "$$"}], fields: ["ecode"]},                                                  // Test [4]
-  {type: [{"$min": "$$"}, {"$max": "$$"}, {"$avg": "$$"}], fields: ["ecode", "rate"]},                          // Test [5]
-  {type: [{"$min": "$$"}, {"$max": "$$"}, {"$avg": "$$"}], fields: []},                                         // Test [6]
-  {type: [{"$stdDevPop": "$$"}], match: {"BayType": "Public"}, fields: ["BayCount"]},           // Test [7]
-  {type: [], match: {"BayType": "Electric"}, fields: ["BayCount", "LotCode"]},          // Test [8]
-  {type: [], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},     // Test [9]
-  {type: [], match: {"BayType": "Mobility"}, fields: ["BayCount", "LotCode"]},          // Test [10]
-  {type: [], match: {"BayType": "Mobility bays"}, fields: []},                          // Test [11]
-  {type: [{"$min": "$$"}], match: {"name": "Surrrey"}, fields: ["ecode"]},                      // Test [12]
-  {type: [], fields: ["ecode"]},                                                        // Test [13]
-  {type: [{"$min": "$$"}], fields: []},                                                         // Test [14]
-  {type: [], fields: []},                                                               // Test [15]
-  {type: [{"$min": "$$"}], fields: ["eccode", "rrate"]},                                         // Test [16]
-  {type: [{"$min": "$$"}, {"$sum": {"$pow": ["$$", 2]}}], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},          // Test [17]
+  {types: [{"$min": "$$"}], fields: ["ecode"]},                                                  // Test [1]
+  {types: [{"$min": "$$"}], fields: ["ecode", "rate"]},                                          // Test [2]
+  {types: [{"$min": "$$"}], match: {"name": "Surrey"}, fields: ["ecode", "rate"]},               // Test [3]
+  {types: [{"$min": "$$"}], fields: ["ecode"]},                                                  // Test [4]
+  {types: [{"$min": "$$"}, {"$max": "$$"}, {"$avg": "$$"}], fields: ["ecode", "rate"]},                          // Test [5]
+  {types: [{"$min": "$$"}, {"$max": "$$"}, {"$avg": "$$"}], fields: []},                                         // Test [6]
+  {types: [{"$stdDevPop": "$$"}], match: {"BayType": "Public"}, fields: ["BayCount"]},           // Test [7]
+  {types: [], match: {"BayType": "Electric"}, fields: ["BayCount", "LotCode"]},          // Test [8]
+  {types: [], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},     // Test [9]
+  {types: [], match: {"BayType": "Mobility"}, fields: ["BayCount", "LotCode"]},          // Test [10]
+  {types: [], match: {"BayType": "Mobility bays"}, fields: []},                          // Test [11]
+  {types: [{"$min": "$$"}], match: {"name": "Surrrey"}, fields: ["ecode"]},                      // Test [12]
+  {types: [], fields: ["ecode"]},                                                        // Test [13]
+  {types: [{"$min": "$$"}], fields: []},                                                         // Test [14]
+  {types: [], fields: []},                                                               // Test [15]
+  {types: [{"$min": "$$"}], fields: ["eccode", "rrate"]},                                         // Test [16]
+  {types: [{"$min": "$$"}, {"$sum": {"$pow": ["$$", 2]}}], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},          // Test [17]
 ];
 
 const testOutputs = [
@@ -130,7 +130,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         timeout: apiTimeout,
       };
@@ -146,7 +146,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         timeout: apiTimeout,
       };
@@ -163,7 +163,7 @@ describe("first-order.js", function() {
 
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         match: testInputs[test].match,
         fields: testInputs[test].fields,
         timeout: apiTimeout,
@@ -180,7 +180,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         timeout: 1,
       };
@@ -196,7 +196,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         timeout: apiTimeout,
       };
@@ -212,7 +212,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         timeout: apiTimeout,
       };
@@ -229,17 +229,13 @@ describe("first-order.js", function() {
 
       api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         match: testInputs[test].match,
         fields: testInputs[test].fields,
         timeout: apiTimeout,
       };
 
       return api.getFirstOrder(datasetIdNqm, params)
-          // .then((val) => {
-          //   val["BayCount"]["$stdDevPop"] = Math.round(parseFloat(val["BayCount"]["$stdDevPop"]) * 100) / 100;
-          //   return Promise.resolve(val);
-          // })
           .should.eventually.deep.equal(testOutputs[test]);
     });
 
@@ -298,7 +294,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         match: testInputs[test].match,
         timeout: apiTimeout,
@@ -315,7 +311,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         match: testInputs[test].match,
         timeout: apiTimeout,
@@ -332,7 +328,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         match: testInputs[test].match,
         timeout: apiTimeout,
@@ -349,7 +345,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         match: testInputs[test].match,
         timeout: apiTimeout,
@@ -366,7 +362,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(config);
       api.setShareKey(shareKeyID, shareKeySecret);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         match: testInputs[test].match,
         timeout: apiTimeout,
@@ -383,7 +379,7 @@ describe("first-order.js", function() {
       const api = new TDXApiStats(configNqm);
       api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
       const params = {
-        type: testInputs[test].type,
+        types: testInputs[test].types,
         fields: testInputs[test].fields,
         match: testInputs[test].match,
         timeout: apiTimeout,
