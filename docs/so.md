@@ -74,3 +74,35 @@ api.getHistogram(datasetId, params)
     //  }
   });
 ```
+
+In the above example ```low``` and ```upp``` arrays are computed using the ```min``` and ```max``` for the field BayCount.
+
+Example with defined ```low``` and ```upp``` arrays:
+```js
+const datasetID = "12345";
+const params ={
+  match: {"BayType": "Mobility bays"},
+  field: "BayCount",
+  binIndex: {
+    type: "number",
+    low: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+    upp: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+  },
+  timeout: 1000,
+};
+
+api.getHistogram(datasetId, params)
+  .then((result) => {
+    // result:
+    // {
+    //    count: 21,
+    //    bins: [3, 3, 2, 0, 1, 0, 0, 1, 0, 1, 0, 1, 7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    //    binIndex: {
+    //      type: "number",
+    //      count: 23,
+    //      low: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+    //      upp: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    //    },
+    //  }
+  });
+```
