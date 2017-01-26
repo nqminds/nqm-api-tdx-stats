@@ -99,3 +99,8 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |[```getSumChunk```](./docs/fo-chunk.md#getsumchunkdatasetid-params-cf)|Returns the sum for a set of fields using the chunking method|
 |[```getAvgChunk```](./docs/fo-chunk.md#getavgchunkdatasetid-params-cf)|Returns the average for a set of fields using the chunking method|
 |[```getStdChunk```](./docs/fo-chunk.md#getstdchunkdatasetid-params-cf)|Returns the standard deviation for a set of fields using the chunking method|
+
+|Methods (second-order)|Description|
+|:---|:---|
+|[```getHistogram```](./docs/so.md#gethistogramdatasetid-params)|Returns the histogram for a field|
+
