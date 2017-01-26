@@ -29,6 +29,15 @@ The bin indices object:
 If ```binIndex.count = n``` and ```binIndex.low.length = 0``` the ```getHistogram``` function will compute
 the ```binIndex.low``` and ```binIndex.upp``` using the ```min``` and ```max``` values for the field ```params.field```.
 
+For ```binIndex.type = "number"``` the histogram will be computed over the intervals:
+
+```
+[binIndex.low[0], binIndex.upp[0]),
+[binIndex.low[1], binIndex.upp[1]),
+...
+[binIndex.low[n-1], binIndex.upp[n-1]]
+```
+
 The function output is a Promise that returns a result object:
 
 |Name|Type|Description|
