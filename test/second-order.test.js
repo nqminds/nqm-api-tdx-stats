@@ -85,6 +85,16 @@ const testInputs = [
       upp: [],
     },
   }, // Test [7]
+  {
+    match: {},
+    field: "BayCount",
+    binIndex: {
+      type: "number",
+      count: 23,
+      low: [],
+      upp: [],
+    },
+  }, // Test [7]
 ];
 
 const testOutputs = [
@@ -144,13 +154,24 @@ const testOutputs = [
   }, // Test [6]
   {
     count: 21,
-    bins: [10, 11],
+    bins: [12, 9],
     binIndex: {
       type: "number",
-      low: [1, 10],
-      upp: [10, 20],
+      count: 2,
+      low: [2, 13.5],
+      upp: [13.5, 25],
     },
   }, // Test [7]
+  {
+    count: 21,
+    bins: [3, 3, 2, 0, 1, 0, 0, 1, 0, 1, 0, 1, 7, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    binIndex: {
+      type: "number",
+      count: 23,
+      low: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+      upp: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    },
+  }, // Test [8]
 ];
 
 const testTimeout = 20000;
@@ -270,6 +291,40 @@ describe.only("second-order.js", function() {
     };
 
     return api.getBasicBins(datasetIdNqm, params)
+        .should.eventually.deep.equal(testOutputs[test]);
+  });
+
+  it(`should return the histogram for binIndex ${JSON.stringify(testInputs[6].binIndex)}`, function() {
+    const test = 6;
+
+    const api = new TDXApiStats(configNqm);
+    api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+    const params = {
+      match: testInputs[test].match,
+      field: testInputs[test].field,
+      binIndex: testInputs[test].binIndex,
+      timeout: apiTimeout,
+    };
+
+    return api.getHistogram(datasetIdNqm, params)
+        .should.eventually.deep.equal(testOutputs[test]);
+  });
+
+  it.only(`should return the histogram for binIndex ${JSON.stringify(testInputs[7].binIndex)}`, function() {
+    const test = 7;
+
+    const api = new TDXApiStats(configNqm);
+    api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+    const params = {
+      match: testInputs[test].match,
+      field: testInputs[test].field,
+      binIndex: testInputs[test].binIndex,
+      timeout: apiTimeout,
+    };
+
+    return api.getHistogram(datasetIdNqm, params)
         .should.eventually.deep.equal(testOutputs[test]);
   });
 });
