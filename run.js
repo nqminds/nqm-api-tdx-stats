@@ -13,7 +13,17 @@ const shareKeySecret = "root";
 const datasetId = "rklWhQU0Ue";
 
 const testInputs = [
-    {type: [], chunkSize: 20, match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]}, fields: ["Friday", "Cost"], index: ["SID", "HWRC", "Waste_Type", "NID", "Contract", "First_Movement"]},
+  {
+    match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]},
+    field: "Friday",
+    index: [],
+    binIndex: {
+      type: "number",
+      count: 10,
+      low: [],
+      upp: [],
+    },
+  }, // Test [1]
 ];
 
 const test = 0;
@@ -21,7 +31,16 @@ const api = new TDXApiStats(config);
 
 api.setShareKey(shareKeyID, shareKeySecret);
 
-api.getStdSample(datasetId, testInputs[test].match, testInputs[test].fields, 10000)
-    .then((val) => {
-      console.log(val);
-    });
+const params = {
+  match: testInputs[test].match,
+  field: testInputs[test].field,
+  binIndex: testInputs[test].binIndex,
+  index: [],
+  limit: 0,
+  timeout: 1000,
+};
+
+api.getHistogram(datasetId, params)
+  .then((result) => {
+    console.log(result);
+  });

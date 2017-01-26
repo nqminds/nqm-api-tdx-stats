@@ -196,7 +196,7 @@ const testOutputs = [
 const testTimeout = 20000;
 const apiTimeout = 10000;
 
-describe.only("second-order.js", function() {
+describe("second-order.js", function() {
   this.timeout(testTimeout);
 
   it(`should return the histogram for binIndex ${JSON.stringify(testInputs[0].binIndex)}`, function() {
@@ -347,7 +347,7 @@ describe.only("second-order.js", function() {
         .should.eventually.deep.equal(testOutputs[test]);
   });
 
-  it.only(`should return the histogram for binIndex ${JSON.stringify(testInputs[8].binIndex)}`, function() {
+  it(`should return the histogram for binIndex ${JSON.stringify(testInputs[8].binIndex)}`, function() {
     const test = 8;
 
     const api = new TDXApiStats(configNqm);
