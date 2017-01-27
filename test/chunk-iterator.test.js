@@ -29,7 +29,7 @@ describe("chunk-iterator.test.js", function() {
       return Promise.resolve({});
     };
 
-    const iterator = new ChunkIterator(callFunction, funcParams, changeFunction);
+    const iterator = new ChunkIterator(changeFunction, callFunction, funcParams);
 
     const ret = iterator.next();
     return ret
