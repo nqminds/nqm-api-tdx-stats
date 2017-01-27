@@ -104,3 +104,7 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |:---|:---|
 |[```getHistogram```](./docs/so.md#gethistogramdatasetid-params)|Returns the histogram for a field|
 
+|Methods (second-order chunking)|Description|
+|:---|:---|
+|[```getHistogramChunk```](./docs/so-chunk.md#gethistogramdatasetid-params)|Returns the histogram for a field using the chunking method|
+
