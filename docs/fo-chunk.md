@@ -13,7 +13,7 @@ Parameter object ```params```:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|```type```|```Array```|Array of [query type](./params.md#query-type) objects|
+|```types```|```Array```|Array of [query type](./params.md#query-type) objects|
 |```match```|```Object```|[Query match](./params.md#query-match) object|
 |```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```index```|```Array```|Array of primary indices string names|
@@ -26,7 +26,7 @@ Example:
 ```js
 const datasetID = "12345";
 const params ={
-  type: [{"$min": "$$"}, {"$max": "$$"}],
+  types: [{"$min": "$$"}, {"$max": "$$"}],
   match: {"BayType": "Electric"},
   fields: ["BayCount", "LotCode"],
   index: ["ID", "NID"],
@@ -73,7 +73,7 @@ Parameter object ```params```:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|```type```|```Array```|Array of [query type](./params.md#query-type) objects|
+|```types```|```Array```|Array of [query type](./params.md#query-type) objects|
 |```match```|```Object```|[Query match](./params.md#query-match) object|
 |```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```index```|```Array```|Array of primary indices string names|
@@ -107,7 +107,7 @@ Example:
 ```js
 const datasetID = "12345";
 const params ={
-  type: [{"$min": "$$"}, {"$max": "$$"}],
+  types: [{"$min": "$$"}, {"$max": "$$"}],
   match: {"BayType": "Electric"},
   fields: ["BayCount", "LotCode"],
   index: ["ID", "NID"],
