@@ -12,7 +12,7 @@ Parameter object ```params```:
 
 |Name|Type|Description|
 |:---|:---|:---|
-|```type```|```Array```|Array of [query type](./params.md#query-type) objects|
+|```types```|```Array```|Array of [query type](./params.md#query-type) objects|
 |```match```|```Object```|[Query match](./params.md#query-match) object|
 |```fields```|```Array```|Array of [query field](./params.md#query-field) strings|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
