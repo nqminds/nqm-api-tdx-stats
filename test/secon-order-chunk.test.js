@@ -52,7 +52,7 @@ const testOutputs = [
 const testTimeout = 20000;
 const apiTimeout = 10000;
 
-describe("second-order-chunk.js", function() {
+describe.only("second-order-chunk.js", function() {
   this.timeout(testTimeout);
 
   it(`should return the histogram for binIndex ${JSON.stringify(testInputs[0].binIndex)}`, function() {
@@ -70,8 +70,8 @@ describe("second-order-chunk.js", function() {
       timeout: apiTimeout,
     };
 
-    // return api.getHistogramChunk(datasetId, params)
-    //     .should.eventually.deep.equal(testOutputs[test]);
+    return api.getHistogramChunk(datasetId, params)
+        .should.eventually.deep.equal(testOutputs[test]);
   });
 });
 
