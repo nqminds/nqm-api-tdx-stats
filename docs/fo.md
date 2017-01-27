@@ -30,7 +30,7 @@ Example:
 ```js
 const datasetID = "12345";
 const params ={
-  type: [{"$min": "$$"}, {"$max": "$$"}],
+  types: [{"$min": "$$"}, {"$max": "$$"}],
   match: {"BayType": "Electric"},
   fields: ["BayCount", "LotCode"],
   timeout: 1000,
