@@ -104,6 +104,15 @@ const testInputs = [
       upp: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     },
   }, // Test [9]
+  {
+    match: {"BayType": "obility bays"},
+    field: "BayCount",
+    binIndex: {
+      type: "number",
+      low: [1, 10],
+      upp: [10, 20],
+    },
+  }, // Test [10]
 ];
 
 const testOutputs = [
@@ -112,6 +121,7 @@ const testOutputs = [
     bins: [10, 10],
     binIndex: {
       type: "number",
+      count: 2,
       low: [1, 10],
       upp: [10, 20],
     },
@@ -121,6 +131,7 @@ const testOutputs = [
     bins: [20],
     binIndex: {
       type: "number",
+      count: 1,
       low: [1],
       upp: [20],
     },
@@ -130,6 +141,7 @@ const testOutputs = [
     bins: [],
     binIndex: {
       type: "number",
+      count: 0,
       low: [],
       upp: [],
     },
@@ -139,8 +151,9 @@ const testOutputs = [
     bins: [],
     binIndex: {
       type: "number",
-      low: [1],
-      upp: [20],
+      count: 0,
+      low: [],
+      upp: [],
     },
   }, // Test [4]
   {
@@ -148,6 +161,7 @@ const testOutputs = [
     bins: [3, 0],
     binIndex: {
       type: "number",
+      count: 2,
       low: [1, 10],
       upp: [10, 20],
     },
@@ -157,6 +171,7 @@ const testOutputs = [
     bins: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
     binIndex: {
       type: "number",
+      count: 19,
       low: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
       upp: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     },
@@ -191,6 +206,16 @@ const testOutputs = [
       upp: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
     },
   }, // Test [9]
+  {
+    count: 0,
+    bins: [],
+    binIndex: {
+      type: "number",
+      count: 0,
+      low: [],
+      upp: [],
+    },
+  }, // Test [10]
 ];
 
 const testTimeout = 20000;
@@ -349,6 +374,23 @@ describe("second-order.js", function() {
 
   it(`should return the histogram for binIndex ${JSON.stringify(testInputs[8].binIndex)}`, function() {
     const test = 8;
+
+    const api = new TDXApiStats(configNqm);
+    api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
+
+    const params = {
+      match: testInputs[test].match,
+      field: testInputs[test].field,
+      binIndex: testInputs[test].binIndex,
+      timeout: apiTimeout,
+    };
+
+    return api.getHistogram(datasetIdNqm, params)
+        .should.eventually.deep.equal(testOutputs[test]);
+  });
+
+  it(`should return the histogram for binIndex ${JSON.stringify(testInputs[9].binIndex)}`, function() {
+    const test = 9;
 
     const api = new TDXApiStats(configNqm);
     api.setShareKey(shareKeyIDNqm, shareKeySecretNqm);
