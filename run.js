@@ -14,15 +14,8 @@ const datasetId = "rklWhQU0Ue";
 
 const testInputs = [
   {
-    match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]},
-    field: "Friday",
-    index: [],
-    binIndex: {
-      type: "number",
-      count: 10,
-      low: [],
-      upp: [],
-    },
+    match: {"SID": "2021", "Contract": "Contract", "Waste_Type": "GREEN AM", "First_Movement": "CHILBOLTON COMPOSTING SITE"},
+    fields: ["Saturday"],
   }, // Test [1]
 ];
 
@@ -31,16 +24,7 @@ const api = new TDXApiStats(config);
 
 api.setShareKey(shareKeyID, shareKeySecret);
 
-const params = {
-  match: testInputs[test].match,
-  field: testInputs[test].field,
-  binIndex: testInputs[test].binIndex,
-  index: [],
-  limit: 0,
-  timeout: 1000,
-};
-
-api.getHistogram(datasetId, params)
+api.getMax(datasetId, testInputs[test].match, testInputs[test].fields, 10000)
   .then((result) => {
     console.log(result);
   });

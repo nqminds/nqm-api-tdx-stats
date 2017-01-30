@@ -46,6 +46,7 @@ const testInputs = [
   {types: [], fields: []},                                                               // Test [15]
   {types: [{"$min": "$$"}], fields: ["eccode", "rrate"]},                                         // Test [16]
   {types: [{"$min": "$$"}, {"$sum": {"$pow": ["$$", 2]}}], match: {"BayType": "Mobility bays"}, fields: ["BayCount", "LotCode"]},          // Test [17]
+  {types: [], fields: ["ecode"]},                                                  // Test [18]
 ];
 
 const testOutputs = [
@@ -113,6 +114,10 @@ const testOutputs = [
     count: 3,
     BayCount: [2, 24],
     LotCode: [5, 493],
+  },
+  {                       // Test [18]
+    count: 608,
+    ecode: [201],
   },
 ];
 
@@ -386,6 +391,17 @@ describe("first-order.js", function() {
       };
 
       return api.getFirstOrder(datasetIdNqm, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+    });
+
+    // Test [18]
+    it(`should return the minimum for the fields ${JSON.stringify(testInputs[17].fields)}`, function() {
+      const test = 17;
+
+      const api = new TDXApiStats(config);
+      api.setShareKey(shareKeyID, shareKeySecret);
+
+      return api.getMin(datasetId, testInputs[test].match, testInputs[test].fields, apiTimeout)
           .should.eventually.deep.equal(testOutputs[test]);
     });
   });
