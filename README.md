@@ -108,3 +108,8 @@ api.getStdSample(datasetID, [], ["field"], 0)
 |:---|:---|
 |[```getHistogramChunk```](./docs/so-chunk.md#gethistogramdatasetid-params)|Returns the histogram for a field using the chunking method|
 
+|Methods (first-order indexed)|Description|
+|:---|:---|
+|[```getMinIndexed```](./docs/fo-indexed.md#getminindexeddatasetid-params)|Returns the minimum for an indexed field|
+|[```getMaxIndexed```](./docs/fo-indexed.md#getmaxindexeddatasetid-params)|Returns the maximum for an indexed field|
+
