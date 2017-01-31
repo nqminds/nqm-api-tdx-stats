@@ -20,6 +20,7 @@ The function output is a Promise that returns a result object:
 
 |Name|Type|Description|
 |:---|:---|:---|
+|```count```|```Integer```|Total count of documents matching ```params.match```|
 |```params.fields[0]```|```Array```|Array of size one with the minimum value|
 
 ## getMaxIndexed(datasetID, params)
@@ -42,5 +43,6 @@ The function output is a Promise that returns a result object:
 
 |Name|Type|Description|
 |:---|:---|:---|
+|```count```|```Integer```|Total count of documents matching ```params.match```|
 |```params.fields[0]```|```Array```|Array of size one with the maximum value|
 
