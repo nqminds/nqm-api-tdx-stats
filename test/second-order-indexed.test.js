@@ -22,14 +22,50 @@ const datasetId = "rklWhQU0Ue";
 
 const testInputs = [
   {
-    match: {"SID": "2021", "Contract": "Contract", "Waste_Type": "GREEN AM", "First_Movement": "CHILBOLTON COMPOSTING SITE"},
+    match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]},
     field: "Saturday",
+    binIndex: {
+      type: "number",
+      count: 10,
+      low: [],
+      upp: [],
+    },
   }, // Test [1]
 ];
 
 const testOutputs = [
   {
-    count: 200,
-    Saturday: [0],
+    count: 50,
+    bins: [30, 0, 0, 10, 0, 0, 0, 0, 0, 10],
+    binIndex: {
+      type: "number",
+      count: 10,
+      low: [0.41, 9.687000000000001, 18.964000000000002, 28.241000000000003, 37.518, 46.795, 56.072, 65.349, 74.626, 83.903],
+      upp: [9.687000000000001, 18.964000000000002, 28.241000000000003, 37.518, 46.795, 56.072, 65.349, 74.626, 83.903, 93.18],
+    },
   }, // Test [1]
 ];
+
+const testTimeout = 20000;
+const apiTimeout = 10000;
+
+describe.only("second-order-indexed.js", function() {
+  this.timeout(testTimeout);
+
+  it(`should return the histogram for binIndex ${JSON.stringify(testInputs[0].binIndex)}`, function() {
+    const test = 0;
+
+    const api = new TDXApiStats(config);
+    api.setShareKey(shareKeyID, shareKeySecret);
+
+    const params = {
+      match: testInputs[test].match,
+      field: testInputs[test].field,
+      binIndex: testInputs[test].binIndex,
+      timeout: apiTimeout,
+    };
+
+    return api.getHistogramIndexed(datasetId, params)
+        .should.eventually.deep.equal(testOutputs[test]);
+  });
+});
