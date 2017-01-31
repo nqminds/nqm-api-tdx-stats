@@ -3,7 +3,6 @@
 
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
-const Promise = require("bluebird");
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -46,6 +45,10 @@ const testInputs = [
     match: {"SID": "2021", "Contract": "CContract", "Waste_Type": "GREEN AM", "First_Movement": "CHILBOLTON COMPOSTING SITE"},
     field: "Saturday",
   }, // Test [6]
+  {
+    match: {"SID": "2021", "Contract": "CContract", "Waste_Type": "GREEN AM", "First_Movement": "CHILBOLTON COMPOSTING SITE"},
+    field: "Saturday",
+  }, // Test [7]
 ];
 
 const testOutputs = [
@@ -71,12 +74,14 @@ const testOutputs = [
   {
     count: 0,
   }, // Test [6]
+  {
+  }, // Test [7]
 ];
 
 const testTimeout = 20000;
 const apiTimeout = 10000;
 
-describe.only("first-order-indexed.js", function() {
+describe("first-order-indexed.js", function() {
   this.timeout(testTimeout);
 
   it(`should return the minimum for the field ${JSON.stringify(testInputs[0])}`, function() {
@@ -163,6 +168,22 @@ describe.only("first-order-indexed.js", function() {
       match: testInputs[test].match,
       field: testInputs[test].field,
       timeout: apiTimeout,
+    };
+
+    return api.getMaxIndexed(datasetId, params)
+          .should.eventually.deep.equal(testOutputs[test]);
+  });
+
+  it(`should return the minimum for the field ${JSON.stringify(testInputs[6])}`, function() {
+    const test = 6;
+
+    const api = new TDXApiStats(config);
+    api.setShareKey(shareKeyID, shareKeySecret);
+    const params = {
+      match: testInputs[test].match,
+      field: testInputs[test].field,
+      timeout: apiTimeout,
+      getcount: false,
     };
 
     return api.getMaxIndexed(datasetId, params)
