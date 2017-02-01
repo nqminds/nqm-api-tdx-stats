@@ -13,7 +13,7 @@ Parameter object ```params```:
 |Name|Type|Description|
 |:---|:---|:---|
 |```match```|```Object```|The [Query match](./params.md#query-match) object|
-|```field```|```String```|The [query field](./params.md#query-field) string|
+|```field```|```String```|The [query field](./params.md#query-field) string, must be indexed|
 |```binIndex```|```Object```|The bin indices object|
 |```timeout```|```Integer```|Waiting time period (milliseconds) for nqm-tdx-api function call. If ```timeout = 0``` the waiting time is disregarded|
 
