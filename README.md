@@ -115,5 +115,4 @@ api.getStdSample(datasetID, [], ["field"], 0)
 
 |Methods (second-order indexed)|Description|
 |:---|:---|
-|[```getHistogramIndexed```](./docs/so-indexed.md#gethistogramindexeddatasetid-params)|Returns the minimum for an indexed field|
-|[```getMaxIndexed```](./docs/fo-indexed.md#getmaxindexeddatasetid-params)|Returns the histogram for an indexed field|
+|[```getHistogramIndexed```](./docs/so-indexed.md#gethistogramindexeddatasetid-params)|Returns the histogram for an indexed field|
