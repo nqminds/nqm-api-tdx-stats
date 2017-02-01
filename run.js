@@ -14,12 +14,12 @@ const datasetId = "rklWhQU0Ue";
 
 const testInputs = [
   {
-    match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]},
+    match: {"$and": [{"SID": "2021"}, {"NID": "11111111111111111111111111"}, {"Contract": "Non_Contract"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]},
     field: "Saturday",
     index: [],
     binIndex: {
       type: "number",
-      count: 10,
+      count: 1,
       low: [],
       upp: [],
     },
@@ -32,7 +32,7 @@ const api = new TDXApiStats(config);
 
 api.setShareKey(shareKeyID, shareKeySecret);
 
-api.getHistogramChunk(datasetId, testInputs[test])
+api.getHistogram(datasetId, testInputs[test])
   .then((result) => {
     console.log(result);
   });
