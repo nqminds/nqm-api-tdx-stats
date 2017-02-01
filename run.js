@@ -14,8 +14,8 @@ const datasetId = "rklWhQU0Ue";
 
 const testInputs = [
   {
-    match: {"$and": [{"SID": "2021"}, {"NID": "11111111111111111111111111"}, {"Contract": "Non_Contract"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]},
-    field: "Saturday",
+    match: {"$and": [{"SID": "2021"}, {"Waste_Type": "WOODMX"}, {"HWRC": "Winchester"}]},
+    field: "Satturday",
     index: [],
     binIndex: {
       type: "number",
