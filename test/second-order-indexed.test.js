@@ -100,7 +100,7 @@ const testOutputs = [
 const testTimeout = 20000;
 const apiTimeout = 10000;
 
-describe.only("second-order-indexed.js", function() {
+describe("second-order-indexed.js", function() {
   this.timeout(testTimeout);
 
   it(`should return the histogram for binIndex ${JSON.stringify(testInputs[0].binIndex)}`, function() {

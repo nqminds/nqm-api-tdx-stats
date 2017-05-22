@@ -3,6 +3,7 @@
 
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
+const TDXApi = require("nqm-api-tdx");
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -81,13 +82,15 @@ const testOutputs = [
 const testTimeout = 20000;
 const apiTimeout = 10000;
 
-describe("first-order-indexed.js", function() {
+describe.only("first-order-indexed.js", function() {
   this.timeout(testTimeout);
 
   it(`should return the minimum for the field ${JSON.stringify(testInputs[0])}`, function() {
     const test = 0;
 
-    const api = new TDXApiStats(config);
+    const tdxApi = new TDXApi(config);
+    const api = new TDXApiStats({}, tdxApi);
+
     api.setShareKey(shareKeyID, shareKeySecret);
     const params = {
       match: testInputs[test].match,

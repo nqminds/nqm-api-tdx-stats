@@ -1,6 +1,6 @@
 {
   "name": "nqm-api-tdx-stats",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "nquiringminds Trusted Data Exchange Statistics API interface for nodejs clients",
   "main": "index.js",
   "scripts": {
